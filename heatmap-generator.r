@@ -4,12 +4,25 @@
 # TITLE    : heatmap-generator.r
 # ABSTRACT : An R script that creates gene transcription and gene binding
 #            heatmaps from CSV files.
-# 
+#
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
 # DATE     : 2017-06-19
 #
 # LICENCE  : MIT <https://opensource.org/licenses/MIT>
 #===============================================================================
+
+# USEAGE:
+#     ./heatmap-generator.r CSV_PATH LOWER_BOUND UPPER_BOUND TRANSCRIPTION_PATH
+#         BINDING_PATH
+#
+# ARGUMENTS:
+#     CSV_FILE           : filepath of the csv file containing gene
+#                          transcription and gene binding data
+#     LOWER_BOUND        : minimum value on the gene transcription scale
+#     UPPER_BOUND        : maximum value on the gene transcription scale
+#     TRANSCRIPTION_PATH : filepath where the gene transcription heatmap will be
+#                          saved
+#     BINDING_PATH       : filepath where the gene binding heatmap will be saved
 
 # save the default warning option
 default_warn <- getOption("warn")
