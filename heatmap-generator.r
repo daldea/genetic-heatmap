@@ -1,10 +1,10 @@
 #!/usr/bin/env Rscript
 
 #===============================================================================
-# TITLE    : heatmapGenerator.r
-# ABSTRACT : An R script to create gene transcription and gene binding heatmaps
-#            from CSV files
-#
+# TITLE    : heatmap-generator.r
+# ABSTRACT : An R script that creates gene transcription and gene binding
+#            heatmaps from CSV files.
+# 
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
 # DATE     : 2017-06-19
 #
