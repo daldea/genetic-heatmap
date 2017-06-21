@@ -16,7 +16,7 @@
 #         BINDING_PATH
 #
 # ARGUMENTS:
-#     CSV_FILE           : filepath of the csv file containing gene
+#     CSV_PATH           : filepath of the csv file containing gene
 #                          transcription and gene binding data
 #     LOWER_BOUND        : minimum value on the gene transcription scale
 #     UPPER_BOUND        : maximum value on the gene transcription scale
