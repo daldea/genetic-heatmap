@@ -36,32 +36,39 @@ options(warn = default_warn)
 # height and width of images in centimeters
 image_dimensions <- c(5, 15)
 
-# remove axis labels, lines, tick marks, padding and whitespace
+# remove titles, labels, lines, tick marks, padding and whitespace
+# use monospaced font in legend text so that both heatmaps are properly aligned
 minimal_theme <- theme(plot.margin = unit(c(0, 0, -0.5, -0.5), "line"),
+                       title       = element_blank(),
                        axis.text   = element_blank(),
                        axis.ticks  = element_blank(),
-                       axis.title  = element_blank())
+                       legend.text = element_text(family = "mono"))
 
 # color scale for transcription heatmap
-blue_white_red_scale <- scale_fill_gradient2(low      = "blue",
+# add plus sign to legend text so that both heatmaps are properly aligned
+# are properly aligned
+blue_white_red_scale <- scale_fill_gradient2(labels   = function(x)
+                                                        sprintf("%+d", x),
+                                             low      = "blue",
                                              mid      = "white",
                                              high     = "red",
                                              midpoint = 0,
-                                             guide    = "colourbar")
+                                             guide    = "colorbar")
 
 # color scale for binding heatmap
-black_yellow_scale <- scale_fill_gradient(low   = "black",
-                                          high  = "yellow",
-                                          guide = "colourbar")
+black_yellow_scale <- scale_fill_gradient(labels = function(x)
+                                                     sprintf("%+d", x),
+                                          low    = "black",
+                                          high   = "yellow",
+                                          guide  = "colorbar")
 
 # save a plot with a given scale, theme and dimensions (cm) to a given file
-draw_heatmap <- function(ggplot, legend_label, fill_scale, theme,
+draw_heatmap <- function(ggplot, fill_scale, theme,
                          dimension_vector, filepath) {
     map <- ggplot + geom_raster() +
                     scale_x_continuous(expand = c(0,0)) +
                     scale_y_continuous(expand = c(0,0)) +
                     fill_scale +
-                    labs(fill = legend_label) +
                     theme
     ggsave(filepath,
            plot   = map,
@@ -123,11 +130,7 @@ args <- store_arguments(argument_names)
 
 # read data from CSV
 # first column -> transcription data, second column -> binding data
-gene_data <- read.csv(args[["csv_path"]], header = TRUE)
-
-# store given column names in order to label legends
-legend_labels <- colnames(gene_data)
-names(legend_labels) <- c("transcription", "binding")
+gene_data <- read.csv(args[["csv_path"]], header = FALSE)
 
 # standardize column names
 # first column -> "transcription", second column -> "binding"
@@ -154,11 +157,10 @@ binding_data <- expand_grid_df(binding_data, data.frame(y_data = -1:1))
 # map transcription data
 transcription_map <- ggplot(transcription_data,
                             aes(x = x_data, y = y_data, fill = transcription))
-draw_heatmap(transcription_map, legend_labels["transcription"],
-             blue_white_red_scale, minimal_theme, image_dimensions,
-             filepath = args[["transcription_path"]])
+draw_heatmap(transcription_map, blue_white_red_scale, minimal_theme,
+             image_dimensions, filepath = args[["transcription_path"]])
 
 # map binding data
 binding_map <- ggplot(binding_data, aes(x = x_data, y = y_data, fill = binding))
-draw_heatmap(binding_map, legend_labels["binding"], black_yellow_scale,
+draw_heatmap(binding_map, black_yellow_scale,
              minimal_theme, image_dimensions, filepath = args[["binding_path"]])
