@@ -1,0 +1,41 @@
+#!/bin/bash
+
+#===============================================================================
+# TITLE    : heatmap
+# ABSTRACT : An alias of "~/.genetic-heatmaps/terminal-interface.sh". It should
+#            be located in the "~/bin" directory so that the shell recognizes
+#            the "heatmap" command. 
+#
+# AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
+# DATE     : 2017-06-21
+#
+# LICENCE  : MIT <https://opensource.org/licenses/MIT>
+#-------------------------------------------------------------------------------
+# USEAGE:
+#     heatmaps [OPTIONS] CSV_FILE LOWER_BOUND UPPER_BOUND TRANSCRIPTION_FILE
+#         BINDING_FILE
+# 
+# OPTIONS:
+#     -f : do not prompt before overwriting files
+#     -i : prompt before overwriting files (default)
+#     -n : do not overwrite files
+#     
+#     If multiple options are given, only the final option takes effect.
+# 
+# ARGUMENTS:
+#     CSV_FILE           : filepath of the csv file containing gene
+#                          transcription and gene binding data
+#     LOWER_BOUND        : minimum value on the gene transcription scale
+#     UPPER_BOUND        : maximum value on the gene transcription scale
+#     TRANSCRIPTION_FILE : filepath where the gene transcription heatmap will be
+#                          saved
+#     BINDING_FILE       : filepath where the gene binding heatmap will be saved
+#-------------------------------------------------------------------------------
+# ALIAS PROGRESSION:
+#     1. heatmap [OPTIONS] ARGUMENTS
+#     2. ~/bin/heatmap [OPTIONS] ARGUMENTS
+#     3. ~/.genetic-heatmaps/terminal-interface.sh [OPTIONS] ARGUMENTS
+#===============================================================================
+
+# pass all arguments to "terminal-interface.sh"
+~/.genetic-heatmaps/terminal-interface.sh "$@"
