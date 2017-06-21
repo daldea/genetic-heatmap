@@ -6,11 +6,10 @@
 #            heatmaps from CSV files.
 #
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
-# DATE     : 2017-06-19
+# DATE     : 2017-06-21
 #
 # LICENCE  : MIT <https://opensource.org/licenses/MIT>
-#===============================================================================
-
+#-------------------------------------------------------------------------------
 # USEAGE:
 #     ./heatmap-generator.r CSV_PATH LOWER_BOUND UPPER_BOUND TRANSCRIPTION_PATH
 #         BINDING_PATH
@@ -23,6 +22,7 @@
 #     TRANSCRIPTION_PATH : filepath where the gene transcription heatmap will be
 #                          saved
 #     BINDING_PATH       : filepath where the gene binding heatmap will be saved
+#===============================================================================
 
 # save the default warning option
 default_warn <- getOption("warn")
