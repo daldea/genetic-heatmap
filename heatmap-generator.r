@@ -141,7 +141,6 @@ transcription_data <- flatten_outliers(gene_data, "transcription",
                                        args[["lower_bound"]],
                                        args[["upper_bound"]],
                                        c("transcription"))
-
 transcription_data$x_data <- attr(transcription_data, "row.names") - 1
 # append meaningless y values (-1, 0 and 1) to every x value
 transcription_data <- expand_grid_df(transcription_data,
