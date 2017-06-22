@@ -41,9 +41,9 @@ These heatmaps contain a lot of information, but are not very useful in a public
    chmod 755 heatmap terminal-interface.sh heatmap-generator.r
    ```
 
-5. Move the `heatmap` file to the `~/bin` directory.
+5. Copy the `heatmap` file to the `~/bin` directory.
    ```
-   mv ~/.genetic-heatmaps/heatmap ~/bin
+   cp ~/.genetic-heatmaps/heatmap ~/bin
    ```
 
 ## Useage
