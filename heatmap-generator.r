@@ -162,5 +162,5 @@ draw_heatmap(transcription_map, blue_white_red_scale, minimal_theme,
 
 # map binding data
 binding_map <- ggplot(binding_data, aes(x = x_data, y = y_data, fill = binding))
-draw_heatmap(binding_map, black_yellow_scale,
-             minimal_theme, image_dimensions, filepath = args[["binding_path"]])
+draw_heatmap(binding_map, black_yellow_scale, minimal_theme, image_dimensions,
+             filepath = args[["binding_path"]])
