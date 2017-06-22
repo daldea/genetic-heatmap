@@ -4,7 +4,7 @@ The genetic heatmaps program is a Unix command-line tool that creates minimally 
 
 Although many [Gene Set Enrichment Analysis](https://en.wikipedia.org/wiki/Gene_set_enrichment_analysis) programs can also be used to create heatmaps, these heatmaps are typically small raster images that are cluttered with additional graphs and annotations:
 
-<div style="text-align: center"><img src="http://compbio.dfci.harvard.edu/pubs/ovarian_expression/html_results/gsea/gsea_s1.Gsea.1275426366765/enplot_LEADING_EDGE_247.png" title="A poorly designed heatmap made by another program" width="500"/></div>
+<img src="http://compbio.dfci.harvard.edu/pubs/ovarian_expression/html_results/gsea/gsea_s1.Gsea.1275426366765/enplot_LEADING_EDGE_247.png" title="A poorly designed heatmap made by another program" width="500"/>
 
 These heatmaps contain a lot of information, but are not very useful in a publication. In contrast, the heatmaps produced by the genetic heatmaps program:
 
@@ -95,9 +95,9 @@ heatmap ~/research/data/foo.csv -2.5 2.5 ~/research/figures/bar1.svg ~/research/
 
 3. Copy-and-paste the gene binding data into the second column.
    * At this point, your spreadsheet should look like the one below, but with different data:  
-   <img src="https://image.ibb.co/niAvHk/spreadsheet.png" title="An example spreadsheet" width="500"/>
+   <img src="https://image.ibb.co/niAvHk/spreadsheet.png" title="An example spreadsheet" width="250"/>
 
-4. Save the spreadsheet as a _comma-separated-values_ (CSV) file.
+4. Save the spreadsheet as a comma-separated-values (CSV) file.
 
 5. Open a terminal window and type the following command:
    ```
