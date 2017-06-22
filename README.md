@@ -63,7 +63,7 @@ heatmap [OPTION]... CSV_FILE LOWER_BOUND UPPER_BOUND TRANSCRIPTION_FILE BINDING_
 | `-n`     | do not overwrite files                      |
 | `--help` | display useage notes                        |
 
-If no options are given, the `-i` option is implied.
+If no options are given, the `-i` option is implied.  
 If multiple options are given, only the final option takes effect.
 
 ### Arguments
@@ -84,7 +84,7 @@ heatmap ~/research/data/foo.csv -2.5 2.5 ~/research/figures/bar1.svg ~/research/
 
 * use the data at `~/research/data/foo.csv`
 * create a gene transcription heatmap at `~/research/figures/bar1.svg`
-  * scale the gene transcription heatmap from `-2.5` to `2.5` 
+  * scale the heatmap from `-2.5` to `2.5` 
 * create a gene binding heatmap at `~/research/data/bar2.svg`
 
 ### Making your first heatmap
