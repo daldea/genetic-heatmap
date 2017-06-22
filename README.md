@@ -95,7 +95,7 @@ heatmap ~/research/data/foo.csv -2.5 2.5 ~/research/figures/bar1.svg ~/research/
 
 3. Copy-and-paste the gene binding data into the second column.
    * At this point, your spreadsheet should look like the one below, but with different data:  
-   <img src="https://image.ibb.co/niAvHk/spreadsheet.png" title="An example spreadsheet" width="250"/>
+     <img src="https://image.ibb.co/niAvHk/spreadsheet.png" title="An example spreadsheet" width="250"/>
 
 4. Save the spreadsheet as a comma-separated-values (CSV) file.
 
