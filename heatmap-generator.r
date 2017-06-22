@@ -97,12 +97,12 @@ flatten_outliers <- function(data, test_column, min, max, selected_columns) {
             modified_data[row_index, test_column] <- max
         }
     }
+    # sort in ascending order by test column
+    modified_data <- modified_data[order(modified_data[[test_column]]), ]
     # create a subset using selected columns
     modified_data <- subset(modified_data, select = selected_columns)
-    # sort in ascending order by test column
-    modified_data <- modified_data[order(test_column)]
-    # reorder row names
-    row.names(modified_data) <- NULL
+    # reset row names (1, 2, 3, ... nrows)
+    rownames(modified_data) <- NULL
     return(modified_data)
 }
 
@@ -141,6 +141,7 @@ transcription_data <- flatten_outliers(gene_data, "transcription",
                                        args[["lower_bound"]],
                                        args[["upper_bound"]],
                                        c("transcription"))
+
 transcription_data$x_data <- attr(transcription_data, "row.names") - 1
 # append meaningless y values (-1, 0 and 1) to every x value
 transcription_data <- expand_grid_df(transcription_data,
