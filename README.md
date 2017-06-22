@@ -38,7 +38,7 @@ These heatmaps contain a lot of information, but are not very useful in a public
 4. Mark the code files as executable.
    ```
    cd ~/.genetic-heatmaps
-   chmod 755 heatmap terminal-interface.sh heatmap-generator.sh
+   chmod 755 heatmap terminal-interface.sh heatmap-generator.r
    ```
 
 5. Move the `heatmap` file to the `~/bin` directory.
