@@ -6,7 +6,7 @@
 #            heatmaps from CSV files.
 #
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
-# DATE     : 2017-06-21
+# DATE     : 2017-06-23
 #
 # LICENCE  : MIT <https://opensource.org/licenses/MIT>
 #-------------------------------------------------------------------------------
@@ -17,8 +17,12 @@
 # ARGUMENTS:
 #     CSV_PATH           : filepath of the csv file containing gene
 #                          transcription and gene binding data
-#     LOWER_BOUND        : minimum value on the gene transcription scale
-#     UPPER_BOUND        : maximum value on the gene transcription scale
+#     TRANSCRIPTION_MIN  : minimum value on the gene transcription scale
+#     TRANSCRIPTION_MAX  : maximum value on the gene transcription scale
+#     BINDING_MAX        : minimum value on the gene binding scale
+#                              passing a value of 0 sets the maximum value on
+#                              gene binding scale to the maximum gene binding
+#                              value in the data set
 #     TRANSCRIPTION_PATH : filepath where the gene transcription heatmap will be
 #                          saved
 #     BINDING_PATH       : filepath where the gene binding heatmap will be saved
@@ -85,22 +89,29 @@ expand_grid_df <- function(...) {
 # generate a copy of a data frame in which all values in a given column greater
 # than a given max are set to max and all values less than a given min are set
 # to min
-flatten_outliers <- function(data, test_column, min, max, selected_columns) {
+# the data are sorted by an optional sort column and a given subset of columns
+# are extracted to form the output data frame
+flatten_outliers <- function(data, test, min, max, sort = NULL,
+                             selection = NULL) {
     # copy data into a local variable so that original data is not modified
     modified_data <- data
     # iterate through every row in data frame
     for (row_index in c(1:nrow(modified_data))) {
         # flatten data in test column (set outliers to min or max)
-        if (modified_data[row_index, test_column] < min) {
-            modified_data[row_index, test_column] <- min
-        } else if (modified_data[row_index, test_column] > max) {
-            modified_data[row_index, test_column] <- max
+        if (modified_data[row_index, test] < min) {
+            modified_data[row_index, test] <- min
+        } else if (modified_data[row_index, test] > max) {
+            modified_data[row_index, test] <- max
         }
     }
-    # sort in ascending order by test column
-    modified_data <- modified_data[order(modified_data[[test_column]]), ]
-    # create a subset using selected columns
-    modified_data <- subset(modified_data, select = selected_columns)
+    # sort in ascending order by sort column, if given
+    if (!is.null(sort)) {
+        modified_data <- modified_data[order(modified_data[[sort]]), ]
+    }
+    # create a subset using selected columns, if given
+    if (!is.null(selection)) {
+        modified_data <- subset(modified_data, select = selection)
+    }
     # reset row names (1, 2, 3, ... nrows)
     rownames(modified_data) <- NULL
     return(modified_data)
@@ -124,8 +135,8 @@ store_arguments <- function(name_vector) {
 }
 
 # read arguments from command line
-argument_names <- c("csv_path", "lower_bound", "upper_bound",
-                    "transcription_path", "binding_path")
+argument_names <- c("csv_path", "transcription_min", "transcription_max",
+                    "binding_max", "transcription_path", "binding_path")
 args <- store_arguments(argument_names)
 
 # read data from CSV
@@ -137,19 +148,27 @@ gene_data <- read.csv(args[["csv_path"]], header = FALSE)
 colnames(gene_data) <- c("transcription", "binding")
 
 # filter transcription data from gene data
+# remove transcription outliers
 transcription_data <- flatten_outliers(gene_data, "transcription",
-                                       args[["lower_bound"]],
-                                       args[["upper_bound"]],
-                                       c("transcription"))
+                                       args[["transcription_min"]],
+                                       args[["transcription_max"]],
+                                       "transcription", c("transcription"))
 transcription_data$x_data <- attr(transcription_data, "row.names") - 1
 # append meaningless y values (-1, 0 and 1) to every x value
 transcription_data <- expand_grid_df(transcription_data,
                                      data.frame(y_data = -1:1))
 
 # filter binding data from gene data
+# remove transcription outliers
 binding_data <- flatten_outliers(gene_data, "transcription",
-                                 args[["lower_bound"]], args[["upper_bound"]],
+                                 args[["transcription_min"]],
+                                 args[["transcription_max"]], "transcription",
                                  c("binding"))
+# remove binding outliers, if given
+if (args[["binding_max"]] != 0) {
+    binding_data <- flatten_outliers(binding_data, "binding", 0,
+                                     args[["binding_max"]])
+}                               
 binding_data$x_data <- attr(binding_data, "row.names") - 1
 # append meaningless y values (-1, 0 and 1) to every x value
 binding_data <- expand_grid_df(binding_data, data.frame(y_data = -1:1))
