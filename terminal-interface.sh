@@ -10,7 +10,7 @@
 #
 # LICENCE  : MIT <https://opensource.org/licenses/MIT>
 #-------------------------------------------------------------------------------
-# USEAGE:
+# USAGE:
 #     heatmaps [OPTIONS] CSV_FILE LOWER_BOUND UPPER_BOUND TRANSCRIPTION_FILE
 #         BINDING_FILE
 #
@@ -32,7 +32,7 @@
 #===============================================================================
 
 HELP_MESSAGE=$(cat <<'__END_HEREDOC'
-USEAGE:
+USAGE:
     heatmaps [OPTIONS] CSV_FILE LOWER_BOUND UPPER_BOUND TRANSCRIPTION_FILE
         BINDING_FILE
 
@@ -64,14 +64,14 @@ parse_options() {
     #             option flags and the logic for determining precedence between
     #             multiple option flags is hard-coded.
     #
-    # USEAGE    : parse_option FLAG_VAR NUM_VAR PARSE_ARGS
+    # USAGE     : parse_options FLAG_VAR NUM_VAR PARSE_ARGS...
     #
     # ARGUMENTS :
-    #     FLAG_VAR   : variable name that will be given to the selected option
-    #                  flag
-    #     NUM_VAR    : variable name that will be given to the total number of
-    #                  of option flags
-    #     PARSE_ARGS : list of arguments to be parsed
+    #     FLAG_VAR      : variable name that will be given to the selected
+    #                     option flag
+    #     NUM_VAR       : variable name that will be given to the total number
+    #                     of option flags
+    #     PARSE_ARGS... : list of arguments to be parsed
 
     # set local references to given variable names
     local __flag_var="$1"

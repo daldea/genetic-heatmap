@@ -11,7 +11,7 @@
 #
 # LICENCE  : MIT <https://opensource.org/licenses/MIT>
 #-------------------------------------------------------------------------------
-# USEAGE:
+# USAGE:
 #     heatmaps [OPTIONS] CSV_FILE LOWER_BOUND UPPER_BOUND TRANSCRIPTION_FILE
 #         BINDING_FILE
 # 

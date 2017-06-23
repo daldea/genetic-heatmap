@@ -46,7 +46,7 @@ These heatmaps contain a lot of information, but are not very useful in a public
    cp ~/.genetic-heatmaps/heatmap ~/bin
    ```
 
-## Useage
+## Usage
 
 ### Syntax
 
@@ -61,7 +61,7 @@ heatmap [OPTION]... CSV_FILE LOWER_BOUND UPPER_BOUND TRANSCRIPTION_FILE BINDING_
 | `-f`     | do not prompt before overwriting files      |
 | `-i`     | prompt before overwriting files _(default)_ |
 | `-n`     | do not overwrite files                      |
-| `--help` | display useage notes                        |
+| `--help` | display usage notes                         |
 
 If no options are given, the `-i` option is implied.  
 If multiple options are given, only the final option takes effect.

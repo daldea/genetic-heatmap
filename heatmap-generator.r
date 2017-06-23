@@ -10,7 +10,7 @@
 #
 # LICENCE  : MIT <https://opensource.org/licenses/MIT>
 #-------------------------------------------------------------------------------
-# USEAGE:
+# USAGE:
 #     ./heatmap-generator.r CSV_PATH LOWER_BOUND UPPER_BOUND TRANSCRIPTION_PATH
 #         BINDING_PATH
 #
