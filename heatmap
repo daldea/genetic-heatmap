@@ -4,7 +4,7 @@
 # TITLE    : heatmap
 # ABSTRACT : An alias of "~/.genetic-heatmaps/terminal-interface.sh". It should
 #            be located in the "~/bin" directory so that the shell recognizes
-#            the "heatmap" command. 
+#            the "heatmap" command.
 #
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
 # DATE     : 2017-06-21
@@ -12,21 +12,28 @@
 # LICENCE  : MIT <https://opensource.org/licenses/MIT>
 #-------------------------------------------------------------------------------
 # USAGE:
-#     heatmaps [OPTIONS] CSV_FILE LOWER_BOUND UPPER_BOUND TRANSCRIPTION_FILE
-#         BINDING_FILE
-# 
+#     heatmaps [OPTIONS] CSV_FILE TRANSCRIPTION_MIN
+#         TRANSCRIPTION_MAX [BINDING_MAX] TRANSCRIPTION_FILE BINDING_FILE
+#
 # OPTIONS:
+#     --help    : display this help message
+#     --nozeros : do not map genes with zero transcription values
+#
 #     -f : do not prompt before overwriting files
 #     -i : prompt before overwriting files (default)
 #     -n : do not overwrite files
-#     
-#     If multiple options are given, only the final option takes effect.
-# 
+#
+#     If conflicting options are given, the last option given takes effect.
+#
 # ARGUMENTS:
-#     CSV_FILE           : filepath of the csv file containing gene
+#     CSV_FILE           : filepath of the CSV file containing gene
 #                          transcription and gene binding data
-#     LOWER_BOUND        : minimum value on the gene transcription scale
-#     UPPER_BOUND        : maximum value on the gene transcription scale
+#     TRANSCRIPTION_MIN  : minimum value on the gene transcription scale
+#     TRANSCRIPTION_MAX  : maximum value on the gene transcription scale
+#     BINDING_MAX        : maximum value on the gene binding scale (optional)
+#                              if BINDING_MAX is not given or is set to NONE,
+#                              the maximum value on the gene binding scale is
+#                              set to the maximum gene binding value in the data
 #     TRANSCRIPTION_FILE : filepath where the gene transcription heatmap will be
 #                          saved
 #     BINDING_FILE       : filepath where the gene binding heatmap will be saved

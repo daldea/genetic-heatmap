@@ -3,26 +3,29 @@
 #===============================================================================
 # TITLE    : heatmap-generator.r
 # ABSTRACT : An R script that creates gene transcription and gene binding
-#            heatmaps from CSV files.
+#            heatmaps from CSV files
 #
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
-# DATE     : 2017-06-23
+# DATE     : 2017-06-26
 #
 # LICENCE  : MIT <https://opensource.org/licenses/MIT>
 #-------------------------------------------------------------------------------
 # USAGE:
-#     ./heatmap-generator.r CSV_PATH LOWER_BOUND UPPER_BOUND TRANSCRIPTION_PATH
-#         BINDING_PATH
+#     ./heatmap-generator.r CSV_PATH INCLUDE_ZEROS TRANSCRIPTION_MIN
+#         TRANSCRIPTION_MAX BINDING_MAX TRANSCRIPTION_PATH BINDING_PATH
 #
 # ARGUMENTS:
-#     CSV_PATH           : filepath of the csv file containing gene
+#     CSV_PATH           : filepath of the CSV file containing gene
 #                          transcription and gene binding data
+#     INCLUDE_ZEROS      : TRUE  -> map genes with zero transcription values
+#                          FALSE -> do not map genes with zero transcription
+#                                   values
 #     TRANSCRIPTION_MIN  : minimum value on the gene transcription scale
 #     TRANSCRIPTION_MAX  : maximum value on the gene transcription scale
-#     BINDING_MAX        : minimum value on the gene binding scale
-#                              passing a value of 0 sets the maximum value on
-#                              gene binding scale to the maximum gene binding
-#                              value in the data set
+#     BINDING_MAX        : maximum value on the gene binding scale
+#                              if BINDING_MAX is set to NONE, the maximum value
+#                              on the gene binding scale is set to the maximum
+#                              gene binding value in the data
 #     TRANSCRIPTION_PATH : filepath where the gene transcription heatmap will be
 #                          saved
 #     BINDING_PATH       : filepath where the gene binding heatmap will be saved
@@ -165,10 +168,10 @@ binding_data <- flatten_outliers(gene_data, "transcription",
                                  args[["transcription_max"]], "transcription",
                                  c("binding"))
 # remove binding outliers, if given
-if (args[["binding_max"]] != 0) {
+if (args[["binding_max"]] != "NONE") {
     binding_data <- flatten_outliers(binding_data, "binding", 0,
                                      args[["binding_max"]])
-}                               
+}
 binding_data$x_data <- attr(binding_data, "row.names") - 1
 # append meaningless y values (-1, 0 and 1) to every x value
 binding_data <- expand_grid_df(binding_data, data.frame(y_data = -1:1))
