@@ -17,7 +17,7 @@
 # OPTIONS:
 #     --help      : display this help message
 #     --omitzeros : do not map genes with zero transcription values
-#     
+#
 #     -f : do not prompt before overwriting files
 #     -i : prompt before overwriting files (default)
 #     -n : do not overwrite files
@@ -34,28 +34,7 @@
 #     BINDING_FILE       : filepath where the gene binding heatmap will be saved
 #===============================================================================
 
-HELP_MESSAGE=$(cat <<'__END_HEREDOC'
-USAGE:
-    heatmaps [OPTIONS] CSV_FILE LOWER_BOUND UPPER_BOUND TRANSCRIPTION_FILE
-        BINDING_FILE
-
-OPTIONS:
-    -f : do not prompt before overwriting files
-    -i : prompt before overwriting files (default)
-    -n : do not overwrite files
-
-    If multiple options are given, only the final option takes effect.
-
-ARGUMENTS:
-    CSV_FILE           : filepath of the csv file containing gene
-                         transcription and gene binding data
-    LOWER_BOUND        : minimum value on the gene transcription scale
-    UPPER_BOUND        : maximum value on the gene transcription scale
-    TRANSCRIPTION_FILE : filepath where the gene transcription heatmap will be
-                         saved
-    BINDING_FILE       : filepath where the gene binding heatmap will be saved
-__END_HEREDOC
-)
+HELP_MESSAGE=$(cat resources/HELP_MESSAGE)
 
 HELP_PROMPT="Type \"heatmap --help\" for usage notes."
 
