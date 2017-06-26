@@ -6,7 +6,7 @@
 #            them to "heatmap-generator.r"
 #
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
-# DATE     : 2017-06-21
+# DATE     : 2017-06-26
 #
 # LICENCE  : MIT <https://opensource.org/licenses/MIT>
 #-------------------------------------------------------------------------------
@@ -15,11 +15,14 @@
 #         BINDING_FILE
 #
 # OPTIONS:
+#     --help      : display this help message
+#     --omitzeros : do not map genes with zero transcription values
+#     
 #     -f : do not prompt before overwriting files
 #     -i : prompt before overwriting files (default)
 #     -n : do not overwrite files
 #
-#     If multiple options are given, only the final option takes effect.
+#     If multiple conflicting options are given, only the final option takes effect.
 #
 # ARGUMENTS:
 #     CSV_FILE           : filepath of the csv file containing gene
