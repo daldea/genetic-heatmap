@@ -15,14 +15,14 @@
 #         BINDING_FILE
 #
 # OPTIONS:
-#     --help      : display this help message
-#     --omitzeros : do not map genes with zero transcription values
-#
 #     -f : do not prompt before overwriting files
 #     -i : prompt before overwriting files (default)
 #     -n : do not overwrite files
 #
-#     If multiple conflicting options are given, only the final option takes effect.
+#     --help      : display this help message
+#     --omitzeros : do not map genes with zero transcription values
+#
+#     If conflicting options are given, the last option given takes effect.
 #
 # ARGUMENTS:
 #     CSV_FILE           : filepath of the csv file containing gene
@@ -34,6 +34,7 @@
 #     BINDING_FILE       : filepath where the gene binding heatmap will be saved
 #===============================================================================
 
+# get the help message from another file
 HELP_MESSAGE=$(cat resources/HELP_MESSAGE)
 
 HELP_PROMPT="Type \"heatmap --help\" for usage notes."
@@ -41,44 +42,48 @@ HELP_PROMPT="Type \"heatmap --help\" for usage notes."
 # output a single option flag and the total number of option flags within a
 # given list of arguments
 parse_options() {
-    # ABSTRACT  : Outputs a single option flag and the total number of option
-    #             flags within a given list of arguments. The list of valid
-    #             option flags and the logic for determining precedence between
-    #             multiple option flags is hard-coded.
+    # ABSTRACT : Outputs a single option flag and the total number of option
+    #            flags within a given list of arguments. The list of valid
+    #            option flags and the logic for determining precedence between
+    #            multiple option flags is hard-coded.
     #
-    # USAGE     : parse_options FLAG_VAR NUM_VAR PARSE_ARGS...
+    # USAGE    : parse_options HELP_VAR OMIT_VAR OW_VAR NUM_VAR PARSE_ARGS...
     #
-    # ARGUMENTS :
-    #     FLAG_VAR      : variable name that will be given to the selected
-    #                     option flag
+    # ARGUMENTS:
+    #     HELP_VAR      : variable name that will be given to the help boolean
+    #     OMIT_VAR      : variable name that will be given to the omitzeros
+    #                     boolean
+    #     OW_VAR        : variable name that will be given to the overwrite flag
     #     NUM_VAR       : variable name that will be given to the total number
-    #                     of option flags
+    #                     of option arguments
     #     PARSE_ARGS... : list of arguments to be parsed
 
-    # set local references to given variable names
-    local __flag_var="$1"
-    local __num_var="$2"
+    # set default option values
+    local help_val=false
+    local omit_val=false
+    local ow_val="i"
+    local num=0
 
+    # set local references to given variable names
+    local __help_var="$1"
+    local __omit_var="$2"
+    local __ow_var="$3"
+    local __num_var="$4"
     # shift function arguments so that $1 refers to the first argument to be
     # parsed
-    shift 2
+    shift 4
 
-    # determine whether user typed "--help"
-    if [[ $1 == "--help" ]]; then
-        local flag='help'
-        # store flag value in FLAG_VAR
-        eval $__flag_var="'$flag'"
-
-        local num=1
-        # store num value in NUM_VAR
-        eval $__num_var="'$num'"
-
-        # do not parse options, exit function
-        return
-    fi
-
-    # default option: prompt before overwriting an existing file
-    local flag="i"
+    # iterate through PARSE_ARGS... to determine whether user typed "--help"
+    for arg in "$@"; do
+        if [[ $arg == "--help" ]]; then
+            help_val=true
+            eval $__help_var="'$help_val'"
+            num=$num+1
+            eval $__num_var="'$num'"
+            # do not parse options, exit function
+            return
+        fi
+    done
 
     # interpret options for whether to overwrite an existing file
     # if conflicting options are given, the final option takes precedence
@@ -111,10 +116,10 @@ parse_options() {
 }
 
 # store selected option flag in $option and number of options in $num_opts
-parse_options option NUM_OPTS "$@"
+parse_options help_opt omit_opt ow_opt num_opts "$@"
 
 # output help message and exit program if user typed "--help"
-if [[ $option == "help" ]]; then
+if $help_opt; then
     echo "$HELP_MESSAGE"
     exit
 fi

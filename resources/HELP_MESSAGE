@@ -3,14 +3,14 @@ USAGE:
         BINDING_FILE
 
 OPTIONS:
-    --help      : display this help message
-    --omitzeros : do not map genes with zero transcription values
-    
     -f : do not prompt before overwriting files
     -i : prompt before overwriting files (default)
     -n : do not overwrite files
 
-    If multiple options are given, only the final option takes effect.
+    --help      : display this help message
+    --omitzeros : do not map genes with zero transcription values
+
+    If conflicting options are given, the last option given takes effect.
 
 ARGUMENTS:
     CSV_FILE           : filepath of the csv file containing gene
