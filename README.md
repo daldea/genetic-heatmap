@@ -1,15 +1,15 @@
 # Genetic Heatmaps
 
-The genetic heatmaps program is a Unix command-line tool that creates minimally formatted, easy-to-read vector image heatmaps of RNA-seq gene transcription and ChIP gene binding data.
+The genetic heatmaps program creates minimally formatted, easy-to-read vector image heatmaps of RNA-seq gene transcription and ChIP gene binding data.
 
-Although many [Gene Set Enrichment Analysis](https://en.wikipedia.org/wiki/Gene_set_enrichment_analysis) programs can also be used to create heatmaps, these heatmaps are typically small raster images that are cluttered with additional graphs and annotations:
+Although many [Gene Set Enrichment Analysis](https://en.wikipedia.org/wiki/Gene_set_enrichment_analysis) programs can also be used to create heatmaps, those heatmaps are typically small raster images cluttered with additional graphs and annotations, rendering them ill-suited for publication:
 
 <img src="http://compbio.dfci.harvard.edu/pubs/ovarian_expression/html_results/gsea/gsea_s1.Gsea.1275426366765/enplot_LEADING_EDGE_247.png" title="A poorly designed heatmap made by another program" width="500"/>
 
-These heatmaps contain a lot of information, but are not very useful in a publication. In contrast, the heatmaps produced by the genetic heatmaps program:
+In contrast, the heatmaps produced by the genetic heatmaps program:
 
 * are completely free of any built-in annotations
-* use easy-to-read color scales that let the data speak for themselves
+* use easy-to-read color scales that clearly display the necessary data
 * can be expanded to any size without losing resolution
 
 <img src="https://image.ibb.co/e7UUsk/binding.png" title="A gene binding heatmap produced by this program" width="500"/>
@@ -22,7 +22,7 @@ These heatmaps contain a lot of information, but are not very useful in a public
    cd ~/Downloads
    wget https://github.com/dennisaldea/genetic-heatmaps/archive/master.tar.gz
    ```
-   
+
 2. Extract the TAR archive.
    ```
    tar -xzvf master.tar.gz
@@ -84,29 +84,29 @@ heatmap ~/research/data/foo.csv -2.5 2.5 ~/research/figures/bar1.svg ~/research/
 
 * use the data at `~/research/data/foo.csv`
 * create a gene transcription heatmap at `~/research/figures/bar1.svg`
-  * scale the heatmap from `-2.5` to `2.5` 
+  * scale the heatmap from `-2.5` to `2.5`
 * create a gene binding heatmap at `~/research/data/bar2.svg`
 
 ### Making your first heatmap
 
-1. Use your favorite spreadsheet editor to create a new spreadsheet.
+1. Use your preferred spreadsheet editor to create a new spreadsheet.
 
 2. Copy-and-paste the gene transcription data into the first column.
 
 3. Copy-and-paste the gene binding data into the second column.
-   * At this point, your spreadsheet should look like the one below, but with different data:  
+   * At this point, your spreadsheet should look similar to the example below (albeit with different data).  
      <img src="https://image.ibb.co/niAvHk/spreadsheet.png" title="An example spreadsheet" width="250"/>
 
 4. Save the spreadsheet as a comma-separated-values (CSV) file.
 
-5. Open a terminal window and type the following command:
+5. Open a terminal window and type the command:
    ```
    heatmap CSV_FILE LOWER_BOUND UPPER_BOUND TRANSCRIPTION_FILE BINDING_FILE
    ```  
    * Replace the uppercase terms with your arguments.
    * Read the [arguments](https://github.com/dennisaldea/genetic-heatmaps#arguments) section for more help.
 
-6. Check that the  heatmaps were correctly saved to `TRANSCRIPTION_FILE` and `BINDING_FILE`.
+6. Ensure that the heatmaps were correctly saved to `TRANSCRIPTION_FILE` and `BINDING_FILE`.
 
 ## Dependencies
 
