@@ -41,7 +41,7 @@
 # get the help message from another file
 HELP_MESSAGE=$(cat resources/HELP_MESSAGE)
 
-HELP_PROMPT="Type \"heatmap --help\" for usage notes."
+HELP_PROMPT="See 'heatmap --help' for usage notes."
 
 # output a single option flag and the total number of option flags within a
 # given list of arguments
