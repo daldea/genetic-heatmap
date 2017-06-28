@@ -56,25 +56,29 @@ heatmap [OPTION]... CSV_FILE LOWER_BOUND UPPER_BOUND TRANSCRIPTION_FILE BINDING_
 
 ### Options
 
-|   Flag   |                 Description                 |
-|   ---    |                     ---                     |
-| `-f`     | do not prompt before overwriting files      |
-| `-i`     | prompt before overwriting files _(default)_ |
-| `-n`     | do not overwrite files                      |
-| `--help` | display usage notes                         |
+|   Option    |                   Description                   |
+|     ---     |                       ---                       |
+| `--help`    | display usage documentation                     |
+| `--nozeros` | do not map genes with zero transcription values |
+| `-f`        | do not prompt before overwriting files          |
+| `-i`        | prompt before overwriting files _(default)_     |
+| `-n`        | do not overwrite files                          |
 
-If no options are given, the `-i` option is implied.  
-If multiple options are given, only the final option takes effect.
+If neither `-f`, `-i`, nor `-n` are given, the `-i` option is implied.  
+If conflicting options are given, the last option given takes effect.
 
 ### Arguments
 
 |       Argument       |                                   Description                                    |
 |         ---          |                                       ---                                        |
-| `CSV_FILE`           | filepath of the CSV file containing the gene transcription and gene binding data |
-| `LOWER_BOUND`        | minimum value on the gene transcription scale                                    |
-| `UPPER_BOUND`        | maximum value on the gene transcription scale                                    |
+| `CSV_FILE`           | filepath of the CSV file containing gene transcription and gene binding data     |
+| `TRANSCRIPTION_MAX`  | minimum value on the gene transcription scale                                    |
+| `TRANSCRIPTION_MIN`  | maximum value on the gene transcription scale                                    |
+| `BINDING_MAX`        | maximum value on the gene binding scale _(optional)_                             |
 | `TRANSCRIPTION_FILE` | filepath where the gene transcription heatmap will be saved                      |
 | `BINDING_FILE`       | filepath where the gene binding heatmap will be saved                            |
+
+If `BINDING_MAX` is not given or is set to `NONE`, the maximum gene binding value in the data set becomes the maximum value on the gene binding scale.
 
 ### Example
 
