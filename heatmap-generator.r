@@ -6,7 +6,7 @@
 #            heatmaps from CSV files
 #
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
-# DATE     : 2017-06-26
+# DATE     : 2017-06-28
 #
 # LICENCE  : MIT <https://opensource.org/licenses/MIT>
 #-------------------------------------------------------------------------------
@@ -138,8 +138,9 @@ store_arguments <- function(name_vector) {
 }
 
 # read arguments from command line
-argument_names <- c("csv_path", "transcription_min", "transcription_max",
-                    "binding_max", "transcription_path", "binding_path")
+argument_names <- c("csv_path", "include_zeros", "transcription_min",
+                    "transcription_max", "binding_max", "transcription_path",
+                    "binding_path")
 args <- store_arguments(argument_names)
 
 # read data from CSV
@@ -149,6 +150,11 @@ gene_data <- read.csv(args[["csv_path"]], header = FALSE)
 # standardize column names
 # first column -> "transcription", second column -> "binding"
 colnames(gene_data) <- c("transcription", "binding")
+
+# remove genes with zero transcription values, if requested
+if (args[["include_zeros"]] == "FALSE") {
+    gene_data <- gene_data[which(gene_data[["transcription"]] != 0), ]
+}
 
 # filter transcription data from gene data
 # remove transcription outliers
