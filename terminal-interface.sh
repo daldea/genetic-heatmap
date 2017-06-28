@@ -39,7 +39,7 @@
 #===============================================================================
 
 # get the help message from another file
-HELP_MESSAGE=$(cat resources/HELP_MESSAGE)
+HELP_MESSAGE=$(cat ~/.genetic-heatmaps/resources/HELP_MESSAGE)
 
 HELP_PROMPT="See 'heatmap --help' for usage notes."
 
@@ -160,7 +160,7 @@ fi
 
 # remove the option flags from the list of positional arguments
 # $1 refers to the input filepath and not the first option flag
-shift $NUM_OPTS
+shift $OPT_COUNT
 
 # check that the number of arguments is valid
 if ! [[ $# -eq 5 || $# -eq 6 ]]; then
