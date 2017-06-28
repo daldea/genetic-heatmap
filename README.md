@@ -108,7 +108,7 @@ heatmap ~/research/data/foo.csv -2.5 2.5 ~/research/figures/bar1.svg ~/research/
    heatmap CSV_FILE LOWER_BOUND UPPER_BOUND TRANSCRIPTION_FILE BINDING_FILE
    ```  
    * Replace the uppercase terms with your arguments.
-   * Read the [arguments](https://github.com/dennisaldea/genetic-heatmaps#arguments) section for more help.
+   * Read the [usage](https://github.com/dennisaldea/genetic-heatmaps#usage) section for more help.
 
 6. Ensure that the heatmaps were correctly saved to `TRANSCRIPTION_FILE` and `BINDING_FILE`.
 
