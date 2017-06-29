@@ -1,17 +1,32 @@
 #!/bin/bash
 
 #===============================================================================
-# TITLE    : gmtools
-# ABSTRACT : An alias of "~/.genetic-heatmaps/terminal-interface.sh". It should
-#            be located in the "~/bin" directory so that the shell recognizes
-#            the "gmtools" command.
+# TITLE    : ghmtools
+# ABSTRACT : An alias of '~/.genetic-heatmaps/terminal-interface.sh'
+#            It should be located in the '~/bin' directory so that the shell
+#            recognizes the 'ghmtools' command.
 #
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
-# DATE     : 2017-06-28
+# DATE     : 2017-06-29
 #
 # LICENCE  : MIT <https://opensource.org/licenses/MIT>
 #-------------------------------------------------------------------------------
-# TODO: add usage, options, and argument notes
+# USAGE:
+#
+#     ghmtools OPERATION [OPTIONS] ARGUMENTS :
+#         execute a given operation with given options and arguments
+#
+#     ghmtools --help :
+#         display a list of operations
+#
+#     ghmtools --help OPERATION :
+#         display the help message for a particular operation
+#
+# OPERATIONS:
+#
+#     analysis : TODO
+#     heatmaps : create gene transcription and gene binding heatmaps from CSV
+#                files
 #-------------------------------------------------------------------------------
 # ALIAS PROGRESSION:
 #     1. ghmtools OPERATION [OPTIONS] ARGUMENTS
