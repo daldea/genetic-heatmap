@@ -16,10 +16,10 @@
 #     ghmtools OPERATION [OPTIONS] ARGUMENTS :
 #         execute a given operation with given options and arguments
 #
-#     ghmtools --help :
+#     ghmtools help :
 #         display a list of operations
 #
-#     ghmtools --help OPERATION :
+#     ghmtools help OPERATION :
 #         display the help message for a particular operation
 #
 # OPERATIONS:

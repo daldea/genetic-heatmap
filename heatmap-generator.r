@@ -16,7 +16,7 @@
 #         TRANSCRIPTION_MAX BINDING_MAX TRANSCRIPTION_PATH BINDING_PATH
 #
 # ARGUMENTS:
-# 
+#
 #     CSV_PATH           : filepath of the CSV file containing gene
 #                          transcription and gene binding data
 #     INCLUDE_ZEROS      : TRUE  -> map genes with zero transcription values
