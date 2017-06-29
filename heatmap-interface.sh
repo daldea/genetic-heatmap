@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #===============================================================================
-# TITLE    : terminal-interface.sh
+# TITLE    : heatmap-interface.sh
 # ABSTRACT : A BASH script that validates command line arguments before passing
 #            them to "heatmap-generator.r"
 #
@@ -11,7 +11,7 @@
 # LICENCE  : MIT <https://opensource.org/licenses/MIT>
 #-------------------------------------------------------------------------------
 # USAGE:
-#     heatmaps [OPTIONS] CSV_FILE TRANSCRIPTION_MIN
+#     ghmtools heatmap [OPTIONS] CSV_FILE TRANSCRIPTION_MIN
 #         TRANSCRIPTION_MAX [BINDING_MAX] TRANSCRIPTION_FILE BINDING_FILE
 #
 # OPTIONS:
