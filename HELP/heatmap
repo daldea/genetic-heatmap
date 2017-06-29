@@ -1,18 +1,19 @@
 USAGE:
-    heatmaps [OPTIONS] CSV_FILE TRANSCRIPTION_MIN
-        TRANSCRIPTION_MAX [BINDING_MAX] TRANSCRIPTION_FILE BINDING_FILE
+
+    ghmtools heatmap [OPTIONS] CSV_FILE TRANSCRIPTION_MIN TRANSCRIPTION_MAX
+        [BINDING_MAX] TRANSCRIPTION_FILE BINDING_FILE
 
 OPTIONS:
-    --help    : display this help message
-    --nozeros : do not map genes with zero transcription values
 
-    -f : do not prompt before overwriting files
-    -i : prompt before overwriting files (default)
-    -n : do not overwrite files
+    -f        : do not prompt before overwriting files
+    -i        : prompt before overwriting files (default)
+    -n        : do not overwrite files
+    --nozeros : do not map genes with zero transcription values
 
     If conflicting options are given, the last option given takes effect.
 
 ARGUMENTS:
+
     CSV_FILE           : filepath of the CSV file containing gene
                          transcription and gene binding data
     TRANSCRIPTION_MIN  : minimum value on the gene transcription scale
