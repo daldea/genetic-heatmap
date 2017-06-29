@@ -17,7 +17,7 @@
 #     1. ghmtools OPERATION [OPTIONS] ARGUMENTS
 #     2. ~/bin/ghmtools OPERATION [OPTIONS] ARGUMENTS
 #     3. ~/.genetic-heatmaps/terminal-interface.sh OPERATION [OPTIONS] ARGUMENTS
-#     4. ~/.genetic-heatmaps/${OPERATION}-interface.sh [OPTIONS] ARGUEMENTS
+#     4. ~/.genetic-heatmaps/${OPERATION}-interface.sh [OPTIONS] ARGUMENTS
 #===============================================================================
 
 # pass all arguments to "terminal-interface.sh"
