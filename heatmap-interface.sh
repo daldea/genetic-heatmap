@@ -41,7 +41,7 @@
 # get the help message from another file
 HELP_MESSAGE=$(cat ~/.genetic-heatmaps/resources/HELP_MESSAGE)
 
-HELP_PROMPT="See 'heatmap --help' for usage notes."
+HELP_PROMPT="Type 'gmtools heatmap --help' for usage notes."
 
 # output a single option flag and the total number of option flags within a
 # given list of arguments
