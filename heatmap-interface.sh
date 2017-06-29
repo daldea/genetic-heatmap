@@ -6,25 +6,26 @@
 #            them to "heatmap-generator.r"
 #
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
-# DATE     : 2017-06-28
+# DATE     : 2017-06-29
 #
 # LICENCE  : MIT <https://opensource.org/licenses/MIT>
 #-------------------------------------------------------------------------------
 # USAGE:
-#     ghmtools heatmap [OPTIONS] CSV_FILE TRANSCRIPTION_MIN
-#         TRANSCRIPTION_MAX [BINDING_MAX] TRANSCRIPTION_FILE BINDING_FILE
+#
+#     ghmtools heatmap [OPTIONS] CSV_FILE TRANSCRIPTION_MIN TRANSCRIPTION_MAX
+#         [BINDING_MAX] TRANSCRIPTION_FILE BINDING_FILE
 #
 # OPTIONS:
-#     --help    : display this help message
-#     --nozeros : do not map genes with zero transcription values
 #
-#     -f : do not prompt before overwriting files
-#     -i : prompt before overwriting files (default)
-#     -n : do not overwrite files
+#     -f        : do not prompt before overwriting files
+#     -i        : prompt before overwriting files (default)
+#     -n        : do not overwrite files
+#     --nozeros : do not map genes with zero transcription values
 #
 #     If conflicting options are given, the last option given takes effect.
 #
 # ARGUMENTS:
+#
 #     CSV_FILE           : filepath of the CSV file containing gene
 #                          transcription and gene binding data
 #     TRANSCRIPTION_MIN  : minimum value on the gene transcription scale
@@ -39,9 +40,8 @@
 #===============================================================================
 
 # get the help message from another file
-HELP_MESSAGE=$(cat ~/.genetic-heatmaps/resources/HELP_MESSAGE)
-
-HELP_PROMPT="Type 'gmtools heatmap --help' for usage notes."
+HELP_MESSAGE=$(cat ~/.genetic-heatmaps/resources/HEATMAP_HELP)
+HELP_PROMPT="Type 'gmtools help heatmap' for usage notes."
 
 # output a single option flag and the total number of option flags within a
 # given list of arguments
@@ -51,10 +51,10 @@ parse_options() {
     #            option flags and the logic for determining precedence between
     #            multiple option flags is hard-coded.
     #
-    # USAGE    : parse_options HELP_VAR OMIT_VAR OW_VAR COUNT_VAR PARSE_ARGS...
+    # USAGE    : parse_options OMIT_VAR OW_VAR COUNT_VAR PARSE_ARGS...
     #
     # ARGUMENTS:
-    #     HELP_VAR      : variable name that will be given to the help boolean
+    #
     #     OMIT_VAR      : variable name that will be given to the nozeros
     #                     boolean
     #     OW_VAR        : variable name that will be given to the overwrite flag
@@ -63,20 +63,18 @@ parse_options() {
     #     PARSE_ARGS... : list of arguments to be parsed
 
     # set default option values
-    local help_val=false
     local omit_val=false
     local ow_val="i"
 
     local count=0
 
     # set local references to given variable names
-    local __help_var="$1"
-    local __omit_var="$2"
-    local __ow_var="$3"
-    local __count_var="$4"
+    local __omit_var="$1"
+    local __ow_var="$2"
+    local __count_var="$3"
     # shift function arguments so that $1 refers to the first argument to be
     # parsed
-    shift 4
+    shift 3
 
     # iterate through PARSE_ARGS to determine long-form options
     local opt_phrase
@@ -88,16 +86,6 @@ parse_options() {
                 opt_phrase="${arg:2:${#arg}-2}"
                 # determine long-form option
                 case $opt_phrase in
-                    help)
-                        # set help values and exit function
-                        help_val=true
-                        count=$((count+1))
-                        eval $__help_var="'$help_val'"
-                        eval $__omit_var="'$omit_val'"
-                        eval $__ow_var="'$ow_val'"
-                        eval $__num_var="'$num'"
-                        return
-                        ;;
                     nozeros)
                         omit_val=true
                         ;;
@@ -143,20 +131,13 @@ parse_options() {
     done
 
     # set output variables
-    eval $__help_var="'$help_val'"
     eval $__omit_var="'$omit_val'"
     eval $__ow_var="'$ow_val'"
     eval $__count_var="'$count'"
 }
 
 # NUM_OPTS = (index of first non-option argument) - 1
-parse_options help_opt omit_opt ow_opt OPT_COUNT "$@"
-
-# output help message and exit program if user typed "--help"
-if $help_opt; then
-    echo "$HELP_MESSAGE"
-    exit
-fi
+parse_options omit_opt ow_opt OPT_COUNT "$@"
 
 # remove the option flags from the list of positional arguments
 # $1 refers to the input filepath and not the first option flag
