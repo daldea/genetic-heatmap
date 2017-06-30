@@ -3,7 +3,7 @@
 #===============================================================================
 # TITLE    : heatmap-interface.sh
 # ABSTRACT : A BASH script that validates command line arguments before passing
-#            them to "heatmap-generator.r"
+#            them to "heatmap-engine.r"
 #
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
 # DATE     : 2017-06-29
@@ -275,7 +275,7 @@ else
     binding_path="$2"
 fi
 
-# pass validated arguments to heatmap-generator.r
-~/.genetic-heatmaps/heatmap-generator.r "$input_path" "$include_zeros" \
+# pass validated arguments to heatmap-engine.r
+~/.genetic-heatmaps/heatmap-engine.r "$input_path" "$include_zeros" \
     "$transcription_min" "$transcription_max" "$binding_max" \
     "$transcription_path" "$binding_path"
