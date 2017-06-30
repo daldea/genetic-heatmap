@@ -16,7 +16,7 @@ OPTIONS:
 ARGUMENTS:
 
     RNA_DATA         : filepath of the file containing RNA-seq data
-    CHIP_DATA        : filepath of the file containing ChIP-seq data
+    CHIP_DATA        : filepath of the BED file containing ChIP-seq data
     BINDING_DISTANCE : maximum distance (in kilobases) that a gene can be from a
                        binding site to be listed as a bound gene
     GENE_LIST        : filepath where the list of bound genes will be saved
