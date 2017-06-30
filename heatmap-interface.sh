@@ -3,7 +3,7 @@
 #===============================================================================
 # TITLE    : heatmap-interface.sh
 # ABSTRACT : A BASH script that validates command line arguments before passing
-#            them to "heatmap-engine.r"
+#            them to 'heatmap-engine.r'
 #
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
 # DATE     : 2017-06-29
