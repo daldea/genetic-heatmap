@@ -39,8 +39,6 @@
 #     BINDING_FILE       : filepath where the gene binding heatmap will be saved
 #===============================================================================
 
-# get the help message from another file
-HELP_MESSAGE=$(cat ~/.genetic-heatmaps/resources/HEATMAP_HELP)
 HELP_PROMPT="Type 'gmtools help heatmap' for usage notes."
 
 # output a single option flag and the total number of option flags within a
