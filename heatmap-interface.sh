@@ -146,12 +146,12 @@ if ! [[ $# -eq 5 || $# -eq 6 ]]; then
     exit 1
 fi
 
-# check that the input file is a valid file
+# check that the CSV file is a valid file
 if ! [[ -f $1 ]]; then
     if ! [[ -e $1 ]]; then
-        echo "ERROR: Input file does not exist ($1)" >&2
+        echo "ERROR: CSV file does not exist ($1)" >&2
     else
-        echo "ERROR: Invalid input file ($1)" >&2
+        echo "ERROR: Invalid CSV file ($1)" >&2
     fi
     echo "$HELP_PROMPT"
     exit 1
@@ -196,7 +196,7 @@ fi
 # determine whether the binding_max was given by checking if  is a number
 if [[ $4 =~ $signed_double_re ]]; then
     if ! [[ $(echo "$4 > 0" | bc) -eq 1 ]]; then
-        echo "ERROR: Binding max () is not greater than 0" >&2
+        echo "ERROR: Binding max ($4) is not greater than 0" >&2
         echo "$HELP_PROMPT"
         exit 1
     fi
@@ -209,7 +209,7 @@ else
     shift 3
 fi
 
-# check that the transcription output file does not exist
+# check that the transcription heatmap file does not exist
 if [[ -e $1 ]]; then
     # if it does exist, check option to determine whether to prompt user
     case $ow_opt in
@@ -240,7 +240,7 @@ else
     transcription_path="$1"
 fi
 
-# check that the binding output file does not exist
+# check that the binding heatmap file does not exist
 if [[ -e $2 ]]; then
     # if it does exist, check option to determine whether to prompt user
     case $ow_opt in
