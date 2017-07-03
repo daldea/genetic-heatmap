@@ -56,4 +56,4 @@ then
 fi
 
 # pass all arguments (except operation name) to operation interface
-eval "$interface \"$@\""
+eval "$interface $@"
