@@ -41,13 +41,11 @@
 
 HELP_PROMPT="Type 'gmtools help heatmap' for usage notes."
 
-# output a single option flag and the total number of option flags within a
-# given list of arguments
 parse_options() {
-    # ABSTRACT : Outputs a single option flag and the total number of option
-    #            flags within a given list of arguments. The list of valid
-    #            option flags and the logic for determining precedence between
-    #            multiple option flags is hard-coded.
+    # ABSTRACT : Outputs given options and the total number of option flags
+    #            within a given list of arguments. The list of valid option
+    #            flags and the logic for determining precedence between multiole
+    #            option flags is hard-coded.
     #
     # USAGE    : parse_options OMIT_VAR OW_VAR COUNT_VAR PARSE_ARGS...
     #
