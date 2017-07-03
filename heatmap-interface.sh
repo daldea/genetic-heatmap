@@ -136,7 +136,7 @@ parse_options() {
 parse_options omit_opt ow_opt OPT_COUNT "$@"
 
 # remove the option flags from the list of positional arguments
-# $1 refers to the input filepath and not the first option flag
+# $1 refers to the CSV filepath and not the first option flag
 shift $OPT_COUNT
 
 # check that the number of arguments is valid
