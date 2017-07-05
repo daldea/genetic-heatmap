@@ -10,8 +10,6 @@ OPTIONS:
     -n        : do not overwrite files
     --nozeros : do not map genes with zero transcription values
 
-    If conflicting options are given, the last option given takes effect.
-
 ARGUMENTS:
 
     CSV_FILE           : filepath of the CSV file containing gene
