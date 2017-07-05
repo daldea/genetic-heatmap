@@ -9,7 +9,7 @@ ABSTRACT : A Python script that parses options and determines the index of the
            arguments to be parsed.
 
 AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
-DATE     : 2017-07-03
+DATE     : 2017-07-05
 LICENCE  : MIT <https://opensource.org/licenses/MIT>
 --------------------------------------------------------------------------------
 USAGE: ./option-parser.py (FLAG [RULE])... -- PARSE_ARGS... -- JSON_FILE
@@ -119,7 +119,7 @@ def expand_short_flags(command_group):
     return command_group
 
 """
-Creates a dicitionary of option values by parsing a list of arguments and a
+Creates a dictionary of option values by parsing a list of arguments and a
 dictionary of option flag metadata
 """
 def parse_options(command_group, flag_metadata):

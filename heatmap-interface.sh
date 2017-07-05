@@ -6,7 +6,7 @@
 #            them to 'heatmap-engine.r'
 #
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
-# DATE     : 2017-06-29
+# DATE     : 2017-07-05
 #
 # LICENCE  : MIT <https://opensource.org/licenses/MIT>
 #-------------------------------------------------------------------------------

@@ -6,7 +6,7 @@
 #            them to BETA and 'analysis-engine.sh'
 #
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
-# DATE     : 2017-06-30
+# DATE     : 2017-07-05
 #
 # LICENCE  : MIT <https://opensource.org/licenses/MIT>
 #-------------------------------------------------------------------------------
