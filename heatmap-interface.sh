@@ -22,8 +22,6 @@
 #     -n        : do not overwrite files
 #     --nozeros : do not map genes with zero transcription values
 #
-#     If conflicting options are given, the last option given takes effect.
-#
 # ARGUMENTS:
 #
 #     CSV_FILE           : filepath of the CSV file containing gene
@@ -39,105 +37,41 @@
 #     BINDING_FILE       : filepath where the gene binding heatmap will be saved
 #===============================================================================
 
+# exit program with error if any command returns an error
+set -e
+
 HELP_PROMPT="Type 'gmtools help heatmap' for usage notes."
 
-parse_options() {
-    # ABSTRACT : Outputs given options and the total number of option flags
-    #            within a given list of arguments. The list of valid option
-    #            flags and the logic for determining precedence between multiole
-    #            option flags is hard-coded.
-    #
-    # USAGE    : parse_options OMIT_VAR OW_VAR COUNT_VAR PARSE_ARGS...
-    #
-    # ARGUMENTS:
-    #
-    #     OMIT_VAR      : variable name that will be given to the nozeros
-    #                     boolean
-    #     OW_VAR        : variable name that will be given to the overwrite flag
-    #     COUNT_VAR     : variable name that will be given to the total number
-    #                     of option arguments
-    #     PARSE_ARGS... : list of arguments to be parsed
+# create a temporary file to store option parser output
+opt_file=$(mktemp /tmp/XXXXXXXX.config)
 
-    # set default option values
-    local omit_val=false
-    local ow_val="i"
+# pass all arguments and option metadata to option parser
+~/.genetic-heatmaps/option-parser.py -f -i -n --nozeros -- $@ -- $opt_file
 
-    local count=0
+# load option parser output
+source $opt_file
 
-    # set local references to given variable names
-    local __omit_var="$1"
-    local __ow_var="$2"
-    local __count_var="$3"
-    # shift function arguments so that $1 refers to the first argument to be
-    # parsed
-    shift 3
+# determine overwrite option
+if $n; then
+    ow_opt="n"
+elif $i; then
+    ow_opt="i"
+elif $f; then
+    ow_opt="f"
+else
+    ow_opt="i"
+fi
 
-    # iterate through PARSE_ARGS to determine long-form options
-    local opt_phrase
-    for arg in "$@"; do
-        if [[ "${arg:0:1}" == "-" ]]; then
-            if [[ "${arg:0:2}" == "--" ]]; then
-                # long-form option parsing
-                # strip leading dashes
-                opt_phrase="${arg:2:${#arg}-2}"
-                # determine long-form option
-                case $opt_phrase in
-                    nozeros)
-                        omit_val=true
-                        ;;
-                    \?)
-                        # exit program with error on invalid option
-                        echo "ERROR: Invalid option (--$opt_phrase)" >&2
-                        echo "$HELP_PROMPT"
-                        exit 1
-                        ;;
-                esac
-            else
-                # short-form option parsing
-                # strip leading dash
-                opt_phrase="${arg:1:${#arg}-1}"
-                # iterate through every character in the short-form phrase
-                local opt_char
-                for ((char_ind=0; char_ind < ${#opt_phrase}; char_ind++)); do
-                    opt_char="${opt_phrase:$char_ind:1}"
-                    case $opt_char in
-                        f)
-                            ow_val="f"
-                            ;;
-                        i)
-                            ow_val="i"
-                            ;;
-                        n)
-                            ow_val="n"
-                            ;;
-                        \?)
-                            # exit program with error on invalid option
-                            echo "ERROR: Invalid option (-$OPTARG)" >&2
-                            echo "$HELP_PROMPT"
-                            exit 1
-                            ;;
-                    esac
-                done
-            fi
-        else
-            # break on first non-option argument
-            break
-        fi
-        count=$((count+1))
-    done
-
-    # set output variables
-    eval $__omit_var="'$omit_val'"
-    eval $__ow_var="'$ow_val'"
-    eval $__count_var="'$count'"
-}
-
-# NUM_OPTS = (index of first non-option argument) - 1
-parse_options omit_opt ow_opt OPT_COUNT "$@"
+# determine include_zeros option to be passed to heatmap-engine.r
+if $nozeros; then
+    include_zeros="FALSE"
+else
+    include_zeros="TRUE"
+fi
 
 # remove the option flags from the list of positional arguments
 # $1 refers to the CSV filepath and not the first option flag
-shift $OPT_COUNT
+shift $((ARG_INDEX - 1))
 
 # check that the number of arguments is valid
 if ! [[ $# -eq 5 || $# -eq 6 ]]; then
@@ -157,13 +91,6 @@ if ! [[ -f $1 ]]; then
     exit 1
 else
     input_path="$1"
-fi
-
-# determine whether to map genes with zero transcription values
-if $omit_opt; then
-    include_zeros="FALSE"
-else
-    include_zeros="TRUE"
 fi
 
 # regular expression to detect positive and negative integers and doubles

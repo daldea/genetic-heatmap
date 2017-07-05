@@ -33,6 +33,9 @@
 #     2. ~/.genetic-heatmaps/OPERATION-interface.sh [OPTIONS] ARGUMENTS
 #===============================================================================
 
+# exit program with error if any command returns an error
+set -e
+
 HELP_PROMPT="Type 'gmtools help' for usage notes."
 
 # remove operation name from command line arguments
