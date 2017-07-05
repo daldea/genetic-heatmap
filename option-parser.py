@@ -137,7 +137,7 @@ def parse_options(command_group, flag_metadata):
             if (command_group[index + 1][0] == "-" and
                 not command_group[index + 1][1].isdigit()):
                     # exit program with error on missing option value
-                    print_error("ERROR: No option value ({flag})".format(flag))
+                    print_error("ERROR: No option value ({})".format(flag))
                     sys.exit(1)
             value = command_group[index + 1]
         # store option value
