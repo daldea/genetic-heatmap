@@ -10,6 +10,9 @@
 # LICENCE  : MIT <https://opensource.org/licenses/MIT>
 #===============================================================================
 
+# exit program with error if any command returns an error
+set -e
+
 HELP_PROMPT="Type 'gmtools help' for usage notes."
 
 # check that only 0 or 1 arguments were passed
