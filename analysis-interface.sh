@@ -111,18 +111,20 @@ case $3 in
         ;;
 esac
 
-# create a temporary sub-directory to store BETA output files
-beta_dir=$temp_dir/BETA_output
-mkdir $beta_dir
+# create a temporary sub-directory to store parsed data files
+mkdir $temp_dir/parsed_data
+
+# remove comments from RNA-seq data file so that it can be read by R
+temp_rna_data=$temp_dir/parsed_data/rna_data
+sed '/^#/ d' < $rna_path > $temp_rna_data
 
 # run the BETA minus genomic analysis program to generate ChIP-seq gene list
 # supress BETA terminal output
-BETA minus -p $chip_path -g $genome -d $binding_dist -o $beta_dir --bl \
-    >/dev/null
+BETA minus -p $chip_path -g $genome -d $binding_dist -o $temp_dir/BETA_output \
+   --bl >/dev/null
 
-beta_genes=$beta_dir/NA_targets.txt
-
-# remove BETA comments from ChIP-seq gene list so that it can read by R
-sed -i '/^#/ d' $beta_genes
+# remove comments from ChIP-seq gene list so that it can read by R
+temp_beta_genes=$temp_dir/parsed_data/beta_genes
+sed '/^#/ d' < $tmp_dir/BETA_output/NA_targets.txt > $temp_beta_genes
 
 # TODO: connect to analysis-engine.r
