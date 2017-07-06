@@ -164,7 +164,7 @@ def locate_first_argument(command_group, flag_metadata):
 
 """
 Converts an option flag to a BASH variable name by removing leading dashes and
-replacing inner dashes with underscores.
+replacing inner dashes with underscores
 """
 def format_bash_variable_name(name):
     dash_count = 0
@@ -183,7 +183,7 @@ def format_bash_variable_name(name):
     return name
 
 """
-Converts a Python value to a BASH value by translating reserved words.
+Converts a Python value to a BASH value by translating reserved words
 """
 def format_bash_variable_value(value):
     # determine if the value is a boolean value

@@ -1,7 +1,6 @@
 USAGE:
 
-    ghmtools analysis [OPTIONS] RNA_DATA CHIP_DATA BINDING_DISTANCE GENE_LIST
-        CSV_FILE
+    ghmtools analysis [OPTIONS] RNA_DATA CHIP_DATA GENOME CSV_FILE
 
 OPTIONS:
 
@@ -9,15 +8,13 @@ OPTIONS:
     -i                : prompt before overwriting files (default)
     -n                : do not overwrite files
     -d <NUMBER>       : maximum distance (in kilobases) between a bound gene and
-                        the nearest binding site
-                            default: 10
+                        the nearest binding site (default: 10)
     --window <NUMBER> : number of genes to be summed to calculate a binding
-                        score
-                            default: 10
+                        score (default: 10)
 
 ARGUMENTS:
 
-    RNA_DATA         : filepath of the file containing RNA-seq data
-    CHIP_DATA        : filepath of the BED file containing ChIP-seq data
-    GENE_LIST        : filepath where the list of bound genes will be saved
-    CSV_FILE         : filepath where the gene activity CSV file will be saved
+    RNA_DATA  : filepath of the file containing RNA-seq data
+    CHIP_DATA : filepath of the BED file containing ChIP-seq data
+    GENOME    : reference genome used by BETA (options: hg19, mm9)
+    CSV_FILE  : filepath where the gene activity CSV file will be saved
