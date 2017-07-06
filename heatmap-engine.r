@@ -146,7 +146,6 @@ argument_names <- c("csv_path", "include_zeros", "transcription_min",
 args <- store_arguments(argument_names)
 
 # read data from CSV
-# first column -> transcription data, second column -> binding data
 gene_data <- read.csv(args[["csv_path"]], header = FALSE)
 
 # standardize column names
