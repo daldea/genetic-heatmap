@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 
 #===============================================================================
-# TITLE    : heatmap-generator.r
+# TITLE    : heatmap-engine.r
 # ABSTRACT : An R script that creates gene transcription and gene binding
 #            heatmaps from CSV files
 #
@@ -12,7 +12,7 @@
 #-------------------------------------------------------------------------------
 # USAGE:
 #
-#     ./heatmap-generator.r CSV_PATH INCLUDE_ZEROS TRANSCRIPTION_MIN
+#     ./heatmap-engine.r CSV_PATH INCLUDE_ZEROS TRANSCRIPTION_MIN
 #         TRANSCRIPTION_MAX BINDING_MAX TRANSCRIPTION_PATH BINDING_PATH
 #
 # ARGUMENTS:
