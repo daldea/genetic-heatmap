@@ -12,8 +12,7 @@
 #-------------------------------------------------------------------------------
 # USAGE:
 #
-#     ghmtools analysis [OPTIONS] RNA_DATA CHIP_DATA BINDING_DISTANCE GENE_LIST
-#         CSV_FILE
+#     ghmtools analysis [OPTIONS] RNA_DATA CHIP_DATA GENOME CSV_FILE
 #
 # OPTIONS:
 #
@@ -21,20 +20,16 @@
 #     -i                : prompt before overwriting files (default)
 #     -n                : do not overwrite files
 #     -d <NUMBER>       : maximum distance (in kilobases) between a bound gene
-#                         and the nearest binding site
-#                             default: 10
+#                         and the nearest binding site (default: 10)
 #     --window <NUMBER> : number of genes to be summed to calculate a binding
-#                         score
-#                             default: 10
+#                         score (default: 10)
 #
 # ARGUMENTS:
 #
-#     RNA_DATA         : filepath of the file containing RNA-seq data
-#     CHIP_DATA        : filepath of the BED file containing ChIP-seq data
-#     BINDING_DISTANCE : maximum distance (in kilobases) that a gene can be from
-#                        a binding site to be listed as a bound gene
-#     GENE_LIST        : filepath where the list of bound genes will be saved
-#     CSV_FILE         : filepath where the gene activity CSV file will be saved
+#     RNA_DATA  : filepath of the file containing RNA-seq data
+#     CHIP_DATA : filepath of the BED file containing ChIP-seq data
+#     GENOME    : reference genome used by BETA (options: hg19, mm9)
+#     CSV_FILE  : filepath where the gene activity CSV file will be saved
 #===============================================================================
 
 # exit program with error if any command returns an error
@@ -42,8 +37,12 @@ set -e
 
 HELP_PROMPT="Type 'gmtools help analysis' for usage notes."
 
+# create a temporary directory to hold temporary files
+temp_dir=$(mktemp -d --tmpdir "$(basename "$0").XXXXXXXXXX")
+
 # create a temporary file to store option parser output
-opt_file=$(mktemp /tmp/XXXXXXXX.config)
+opt_file=$temp_dir/options.conf
+touch $opt_file
 
 # pass all arguments and option metadata to option parser
 ~/.genetic-heatmaps/option-parser.py -f -i -n -d VALUE --window VALUE -- $@ -- \
@@ -63,6 +62,9 @@ else
     ow_opt="i"
 fi
 
+# convert kilobases to bases
+binding_dist=$((d * 1000))
+
 # remove the option flags from the list of positional arguments
 # $1 refers to the CSV filepath and not the first option flag
 shift $((ARG_INDEX - 1))
@@ -77,7 +79,7 @@ if ! [[ -f $1 ]]; then
     echo "$HELP_PROMPT"
     exit 1
 else
-    input_path="$1"
+    rna_path="$1"
 fi
 
 # check that the ChIP-seq file is a valid file
@@ -90,5 +92,37 @@ if ! [[ -f $2 ]]; then
     echo "$HELP_PROMPT"
     exit 1
 else
-    input_path="$1"
+    chip_path="$2"
 fi
+
+# check that the genome is valid
+case $3 in
+    hh19)
+        genome="hh19"
+        ;;
+    mm9)
+        genome="mm9"
+        ;;
+    \?)
+        # exit program with error on invalid genome
+        echo "ERROR: Invalid genome ($3)" >&2
+        echo "$HELP_PROMPT"
+        exit 1
+        ;;
+esac
+
+# create a temporary sub-directory to store BETA output files
+beta_dir=$temp_dir/BETA_output
+mkdir $beta_dir
+
+# run the BETA minus genomic analysis program to generate ChIP-seq gene list
+# supress BETA terminal output
+BETA minus -p $chip_path -g $genome -d $binding_dist -o $beta_dir --bl \
+    >/dev/null
+
+beta_genes=$beta_dir/NA_targets.txt
+
+# remove BETA comments from ChIP-seq gene list so that it can read by R
+sed -i '/^#/ d' $beta_genes
+
+# TODO: connect to analysis-engine.r
