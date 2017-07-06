@@ -42,8 +42,12 @@ set -e
 
 HELP_PROMPT="Type 'gmtools help heatmap' for usage notes."
 
-# create a temporary file to store option parser output
-opt_file=$(mktemp /tmp/XXXXXXXX.config)
+# create a temporary directory to hold temporary files
+temp_dir=$(mktemp -d --tmpdir "$(basename "$0").XXXXXXXXXX")
+
+# create a temporary file to hold option parser output
+opt_file=$temp_dir/options.conf
+touch $opt_file
 
 # pass all arguments and option metadata to option parser
 ~/.genetic-heatmaps/option-parser.py -f -i -n --nozeros -- $@ -- $opt_file
