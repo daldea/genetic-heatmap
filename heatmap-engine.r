@@ -100,7 +100,6 @@ flatten_outliers <- function(data, test, min, max, sort = NULL,
                              selection = NULL) {
     # copy data into a local variable so that original data is not modified
     modified_data <- data
-    # iterate through every row in data frame
     for (row_index in c(1:nrow(modified_data))) {
         # flatten data in test column (set outliers to min or max)
         if (modified_data[row_index, test] < min) {
@@ -127,14 +126,12 @@ flatten_outliers <- function(data, test, min, max, sort = NULL,
 store_arguments <- function(name_vector) {
     # store command line arguments in a list
     argument_list <- as.list(commandArgs(trailingOnly = TRUE))
-    # iterate through every argument in argument list
     for (index in c(1:length(argument_list))) {
         # if argument is a numeric string, convert it to double
         if (suppressWarnings(!is.na(as.double(argument_list[index])))) {
             argument_list[index] <- as.double(argument_list[index])
         }
     }
-    # name arguments using given name vector
     names(argument_list) <- name_vector
     return(argument_list)
 }
@@ -147,9 +144,6 @@ args <- store_arguments(argument_names)
 
 # read data from CSV
 gene_data <- read.csv(args[["csv_path"]], header = FALSE)
-
-# standardize column names
-# first column -> "transcription", second column -> "binding"
 colnames(gene_data) <- c("transcription", "binding")
 
 # remove genes with zero transcription values, if requested
