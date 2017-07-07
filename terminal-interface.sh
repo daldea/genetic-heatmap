@@ -23,10 +23,10 @@
 #
 # OPERATIONS:
 #
-#     analysis : create gene actitity CSV files from RNA-seq and ChIP-seq data
+#     analysis : create gene actitity TSV files from RNA-seq and ChIP-seq data
 #                files
 #     heatmaps : create gene transcription and gene binding heatmaps from gene
-#                activity CSV files
+#                activity TSV files
 #-------------------------------------------------------------------------------
 # ALIAS PROGRESSION:
 #     1. ~/.genetic-heatmaps/terminal-interface.sh OPERATION [OPTIONS] ARGUMENTS
