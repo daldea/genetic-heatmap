@@ -2,8 +2,8 @@
 
 #===============================================================================
 # TITLE    : analysis-engine.r
-# ABSTRACT : An R script that combines RNA-seq files and ChIP-seq gene lists to
-#            generate combined gene activity CSV files
+# ABSTRACT : An R script that combines RNA-seq data files and BETA gene lists to
+#            generate combined gene activity TSV files
 #
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
 # DATE     : 2017-07-06
@@ -12,15 +12,14 @@
 #-------------------------------------------------------------------------------
 # USAGE:
 #
-#     ./analysis-engine.r RNA_PATH CHIP_PATH WINDOW_SIZE OUTPUT_PATH
+#     ./analysis-engine.r RNA_PATH BETA_PATH WINDOW_SIZE OUTPUT_PATH
 #
 # ARGUMENTS:
 #
 #     RNA_PATH      : filepath of the file containing RNA-seq data
-#     CHIP_PATH     : filepath of the file containing ChIP-seq data (i.e. the
-#                     list of bound genes)
+#     BETA_PATH     : filepath of the file containing BETA data
 #     WINDOW_SIZE   : number of genes to be summed to calculate a binding score
-#     OUTPUT_PATH   : filepath where the gene activity CSV file will be saved
+#     OUTPUT_PATH   : filepath where the gene activity TSV file will be saved
 #===============================================================================
 
 # store command line arguments into a list with given names and convert numeric
@@ -28,24 +27,37 @@
 store_arguments <- function(name_vector) {
     # store command line arguments in a list
     argument_list <- as.list(commandArgs(trailingOnly = TRUE))
-    # iterate through every argument in argument list
     for (index in c(1:length(argument_list))) {
         # if argument is a numeric string, convert it to double
         if (suppressWarnings(!is.na(as.double(argument_list[index])))) {
             argument_list[index] <- as.double(argument_list[index])
         }
     }
-    # name arguments using given name vector
     names(argument_list) <- name_vector
     return(argument_list)
 }
 
 # read arguments from command line
-argument_names <- c("rna_path", "chip_path", "window_size", "output_path")
+argument_names <- c("rna_path", "beta_path", "window_size", "output_path")
 args <- store_arguments(argument_names)
 
-# read RNA-seq data from file
-rna_data <- read.delim(args[["rna_path"]], header = FALSE)
+# read RNA-seq data from TSV file
+rna_frame <- read.delim(args[["rna_path"]], header = FALSE)
+colnames(rna_frame) <- c("gene_name", "transcription_score")
 
-# read ChIP-seq data from file
-chip_data <- read.delim(args[["chip_path"]], header = FALSE)
+# read BETA data from TSV file
+beta_frame <- read.delim(args[["beta_path"]], header = FALSE)
+beta_vector <- beta_frame[[ncol(beta_frame)]]
+
+# calculate binding flags from case-insensitive match vector
+match_vector <- toupper(rna_frame[["gene_name"]]) %in% toupper(beta_vector)
+match_vector <- as.numeric(match_vector)
+rna_frame[["binding_flag"]] <- match_vector
+
+# TODO: calculate binding scores from binding flags and window size
+#       (write function)
+
+# TODO: extract output frame from input frame
+#       (copy function from heatmap-engine.r)
+
+# TODO: write output frame to output TSV
