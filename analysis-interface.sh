@@ -124,7 +124,7 @@ BETA minus -p $chip_path -g $genome -d $binding_dist -o $temp_dir/BETA_output \
    --bl >/dev/null
 
 # remove comments from ChIP-seq gene list so that it can read by R
-temp_beta_genes=$temp_dir/parsed_data/beta_genes
-sed '/^#/ d' < $tmp_dir/BETA_output/NA_targets.txt > $temp_beta_genes
+temp_beta_data=$temp_dir/parsed_data/beta_data
+sed '/^#/ d' < $tmp_dir/BETA_output/NA_targets.txt > $temp_beta_data
 
 # TODO: connect to analysis-engine.r
