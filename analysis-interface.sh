@@ -12,7 +12,7 @@
 #-------------------------------------------------------------------------------
 # USAGE:
 #
-#     ghmtools analysis [OPTIONS] RNA_DATA CHIP_DATA GENOME TSV_FILE
+#     ghmtools analysis [OPTIONS] RNA_DATA CHIP_DATA GENOME GENE_FILE
 #
 # OPTIONS:
 #
@@ -29,7 +29,7 @@
 #     RNA_DATA  : filepath of the file containing RNA-seq data
 #     CHIP_DATA : filepath of the BED file containing ChIP-seq data
 #     GENOME    : reference genome used by BETA (options: hg19, mm9)
-#     TSV_FILE  : filepath where the gene activity TSV file will be saved
+#     GENE_FILE : filepath where the gene activity file will be saved
 #===============================================================================
 
 # exit program with error if any command returns an error
