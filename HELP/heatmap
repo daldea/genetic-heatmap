@@ -1,6 +1,6 @@
 USAGE:
 
-    ghmtools heatmap [OPTIONS] CSV_FILE TRANSCRIPTION_MIN TRANSCRIPTION_MAX
+    ghmtools heatmap [OPTIONS] GENE_DATA TRANSCRIPTION_MIN TRANSCRIPTION_MAX
         [BINDING_MAX] TRANSCRIPTION_FILE BINDING_FILE
 
 OPTIONS:
@@ -12,8 +12,8 @@ OPTIONS:
 
 ARGUMENTS:
 
-    CSV_FILE           : filepath of the CSV file containing gene
-                         transcription and gene binding data
+    GENE_DATA          : filepath of the file containing gene transcription and
+                         gene binding data
     TRANSCRIPTION_MIN  : minimum value on the gene transcription scale
     TRANSCRIPTION_MAX  : maximum value on the gene transcription scale
     BINDING_MAX        : maximum value on the gene binding scale (optional)
