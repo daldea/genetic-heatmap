@@ -6,13 +6,13 @@
 #            them to 'heatmap-engine.r'
 #
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
-# DATE     : 2017-07-06
+# DATE     : 2017-07-09
 #
 # LICENCE  : MIT <https://opensource.org/licenses/MIT>
 #-------------------------------------------------------------------------------
 # USAGE:
 #
-#     ghmtools heatmap [OPTIONS] CSV_FILE TRANSCRIPTION_MIN TRANSCRIPTION_MAX
+#     ghmtools heatmap [OPTIONS] GENE_DATA TRANSCRIPTION_MIN TRANSCRIPTION_MAX
 #         [BINDING_MAX] TRANSCRIPTION_FILE BINDING_FILE
 #
 # OPTIONS:
@@ -24,8 +24,8 @@
 #
 # ARGUMENTS:
 #
-#     CSV_FILE           : filepath of the CSV file containing gene
-#                          transcription and gene binding data
+#     GENE_DATA          : filepath of the file containing gene transcription
+#                          and gene binding data
 #     TRANSCRIPTION_MIN  : minimum value on the gene transcription scale
 #     TRANSCRIPTION_MAX  : maximum value on the gene transcription scale
 #     BINDING_MAX        : maximum value on the gene binding scale (optional)
@@ -47,7 +47,6 @@ temp_dir=$(mktemp -d --tmpdir "$(basename "$0").XXXXXXXXXX")
 
 # create a temporary file to hold option parser output
 opt_file=$temp_dir/options.conf
-touch $opt_file
 
 # pass all arguments and option metadata to option parser
 ~/.genetic-heatmaps/option-parser.py -f -i -n --nozeros -- $@ -- $opt_file
@@ -74,7 +73,7 @@ else
 fi
 
 # remove the option flags from the list of positional arguments
-# $1 refers to the CSV filepath and not the first option flag
+# $1 refers to the gene data filepath and not the first option flag
 shift $((ARG_INDEX - 1))
 
 # check that the number of arguments is valid
@@ -84,17 +83,17 @@ if ! [[ $# -eq 5 || $# -eq 6 ]]; then
     exit 1
 fi
 
-# check that the CSV file is a valid file
+# check that the gene data file is a valid file
 if ! [[ -f $1 ]]; then
     if ! [[ -e $1 ]]; then
-        echo "ERROR: CSV file does not exist ($1)" >&2
+        echo "ERROR: Gene data file does not exist ($1)" >&2
     else
-        echo "ERROR: Invalid CSV file ($1)" >&2
+        echo "ERROR: Invalid gene data file ($1)" >&2
     fi
     echo "$HELP_PROMPT"
     exit 1
 else
-    input_path="$1"
+    gene_path="$1"
 fi
 
 # regular expression to detect positive and negative integers and doubles
@@ -203,6 +202,6 @@ else
 fi
 
 # pass validated arguments to heatmap-engine.r
-~/.genetic-heatmaps/heatmap-engine.r "$input_path" "$include_zeros" \
+~/.genetic-heatmaps/heatmap-engine.r "$gene_path" "$include_zeros" \
     "$transcription_min" "$transcription_max" "$binding_max" \
     "$transcription_path" "$binding_path"
