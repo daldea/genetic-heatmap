@@ -143,7 +143,7 @@ argument_names <- c("csv_path", "include_zeros", "transcription_min",
 args <- store_arguments(argument_names)
 
 # read data from CSV
-gene_data <- read.csv(args[["csv_path"]], header = FALSE)
+gene_data <- read.delim(args[["csv_path"]], header = FALSE)
 colnames(gene_data) <- c("transcription", "binding")
 
 # remove genes with zero transcription values, if requested
