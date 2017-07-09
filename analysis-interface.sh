@@ -42,7 +42,6 @@ temp_dir=$(mktemp -d --tmpdir "$(basename "$0").XXXXXXXXXX")
 
 # create a temporary file to store option parser output
 opt_file=$temp_dir/options.conf
-touch $opt_file
 
 # pass all arguments and option metadata to option parser
 ~/.genetic-heatmaps/option-parser.py -f -i -n -d VALUE --window VALUE -- $@ -- \
