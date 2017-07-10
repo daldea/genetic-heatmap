@@ -203,7 +203,11 @@ else
     binding_path="$2"
 fi
 
+# remove comments from gene data file
+temp_gene=$temp_dir/parsed_data/gene_data
+sed '/^#/ d' < $gene_path > $temp_gene
+
 # pass validated arguments to heatmap-engine.r
-~/.genetic-heatmaps/heatmap-engine.r "$gene_path" "$include_zeros" \
+~/.genetic-heatmaps/heatmap-engine.r "$temp_gene" "$include_zeros" \
     "$transcription_min" "$transcription_max" "$binding_max" \
     "$transcription_path" "$binding_path"
