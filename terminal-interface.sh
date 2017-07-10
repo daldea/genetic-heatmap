@@ -25,7 +25,7 @@
 #
 #     analysis : create gene actitity TSV files from RNA-seq and ChIP-seq data
 #                files
-#     heatmaps : create gene transcription and gene binding heatmaps from gene
+#     heatmap  : create gene transcription and gene binding heatmaps from gene
 #                activity TSV files
 #-------------------------------------------------------------------------------
 # ALIAS PROGRESSION:

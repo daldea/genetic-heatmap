@@ -8,6 +8,11 @@
 # DATE     : 2017-06-29
 #
 # LICENCE  : MIT <https://opensource.org/licenses/MIT>
+#-------------------------------------------------------------------------------
+# USAGE:
+#
+#     ghmtools help           : display a list of operations
+#     ghmtools help OPERATION : display the help message for a given operation
 #===============================================================================
 
 # exit program with error if any command returns an error

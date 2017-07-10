@@ -3,8 +3,6 @@
 #===============================================================================
 # TITLE    : ghmtools
 # ABSTRACT : An alias of '~/.genetic-heatmaps/terminal-interface.sh'
-#            It should be located in the '~/bin' directory so that the shell
-#            recognizes the 'ghmtools' command.
 #
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
 # DATE     : 2017-06-29
@@ -28,6 +26,11 @@
 #                files
 #     heatmaps : create gene transcription and gene binding heatmaps from gene
 #                activity TSV files
+#
+# NOTES:
+#
+#     This program should be located in the '~/bin' directory so that the shell
+#     recognizes the 'ghmtools' command.
 #-------------------------------------------------------------------------------
 # ALIAS PROGRESSION:
 #     1. ghmtools OPERATION [OPTIONS] ARGUMENTS
@@ -35,6 +38,9 @@
 #     3. ~/.genetic-heatmaps/terminal-interface.sh OPERATION [OPTIONS] ARGUMENTS
 #     4. ~/.genetic-heatmaps/OPERATION-interface.sh [OPTIONS] ARGUMENTS
 #===============================================================================
+
+# exit program with error if any command returns an error
+set -e
 
 # pass all arguments to "terminal-interface.sh"
 ~/.genetic-heatmaps/terminal-interface.sh "$@"

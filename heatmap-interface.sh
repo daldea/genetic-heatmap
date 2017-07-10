@@ -3,7 +3,7 @@
 #===============================================================================
 # TITLE    : heatmap-interface.sh
 # ABSTRACT : A BASH script that validates command line arguments before passing
-#            them to 'heatmap-engine.r'
+#            them to the heatmap engine
 #
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
 # DATE     : 2017-07-09
@@ -29,12 +29,14 @@
 #     TRANSCRIPTION_MIN  : minimum value on the gene transcription scale
 #     TRANSCRIPTION_MAX  : maximum value on the gene transcription scale
 #     BINDING_MAX        : maximum value on the gene binding scale (optional)
-#                              if BINDING_MAX is not given or is set to NONE,
-#                              the maximum value on the gene binding scale is
-#                              set to the maximum gene binding value in the data
 #     TRANSCRIPTION_FILE : filepath where the gene transcription heatmap will be
 #                          saved
 #     BINDING_FILE       : filepath where the gene binding heatmap will be saved
+#
+# NOTES:
+#
+#     If BINDING_MAX is not given or is set to NONE, the maximum value on the
+#     gene binding scale is set to the maximum gene binding value in the data.
 #===============================================================================
 
 # exit program with error if any command returns an error

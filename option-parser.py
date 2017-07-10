@@ -3,30 +3,35 @@
 """
 TITLE    : option-parser.py
 ABSTRACT : A Python script that parses options and determines the index of the
-           first non-option argument in a list of arguments. The option data is
-           saved as a JSON file. The list of valid option flags and the logic
-           for reading option values is passed to the script along with the
-           arguments to be parsed.
+           first non-option argument in a list of arguments
 
 AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
 DATE     : 2017-07-05
+
 LICENCE  : MIT <https://opensource.org/licenses/MIT>
 --------------------------------------------------------------------------------
-USAGE: ./option-parser.py (FLAG [RULE])... -- PARSE_ARGS... -- JSON_FILE
+USAGE:
 
-    FLAG       : a option flag to search for in PARSE_ARGS
-    RULE       : a rule by which to assign values to option flags (optional)
-                     flag (default) : assign true if FLAG is in PARSE_ARGS
-                                      assign false is FLAG is not in PARSE_ARGS
-                     value          : assign the argument following FLAG if FLAG
-                                        is in PARSE_ARGS
-                                      assign null if FLAG is not in PARSE_ARGS
-    PARSE_ARGS : list of arguments to be parsed
-    JSON_FILE  : filepath where the option data will be saved
+    ./option-parser.py (FLAG [RULE])... -- PARSE_ARGS... -- CONFIG_FILE
+
+ARGUMENTS:
+
+    FLAG        : a option flag to search for in PARSE_ARGS
+    RULE        : a rule by which to assign values to option flags (optional)
+                      flag (default) : assign true if FLAG is in PARSE_ARGS
+                                       assign false is FLAG is not in PARSE_ARGS
+                      value          : assign the argument following FLAG if
+                                         FLAG is in PARSE_ARGS
+                                       assign null if FLAG is not in PARSE_ARGS
+    PARSE_ARGS  : list of arguments to be parsed
+    CONFIG_FILE : filepath where the option data will be saved
+
+NOTES:
+
+    The option data is saved as a BASH-readable configuration file.
 """
 
 import sys
-import json
 
 # argument that separates option metadata from parsing data from JSON filepath
 SEPARATOR = "--"

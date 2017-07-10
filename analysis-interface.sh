@@ -3,7 +3,7 @@
 #===============================================================================
 # TITLE    : analysis-interface.sh
 # ABSTRACT : A BASH script that validates command line arguments before passing
-#            them to BETA and 'analysis-engine.sh'
+#            them to BETA and the analysis engine
 #
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
 # DATE     : 2017-07-06
@@ -12,7 +12,8 @@
 #-------------------------------------------------------------------------------
 # USAGE:
 #
-#     ghmtools analysis [OPTIONS] RNA_DATA CHIP_DATA GENOME GENE_FILE
+#     ghmtools analysis [OPTIONS] TRANSCRIPTION_DATA BINDING_DATA GENOME
+#         GENE_FILE
 #
 # OPTIONS:
 #
@@ -26,10 +27,18 @@
 #
 # ARGUMENTS:
 #
-#     RNA_DATA  : filepath of the file containing RNA-seq data
-#     CHIP_DATA : filepath of the BED file containing ChIP-seq data
-#     GENOME    : reference genome used by BETA (options: hg19, mm9)
-#     GENE_FILE : filepath where the gene activity file will be saved
+#     TRANSCRIPTION_DATA : filepath of the file containing gene transcription
+#                          scores
+#     BINDING_DATA       : filepath of the file containing ChIP-seq data or a
+#                          list of bound genes
+#     GENOME             : reference genome used by BETA (options: hg19, mm9)
+#     GENE_FILE          : filepath where the gene activity file will be saved
+#
+# NOTES:
+#
+#     It is not necessary to specify whether BINDING_DATA is a ChIP-seq data
+#     file or a list of bound genes, since the analysis interface can determine
+#     this automatically.
 #===============================================================================
 
 # exit program with error if any command returns an error

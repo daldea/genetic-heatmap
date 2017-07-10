@@ -6,7 +6,7 @@
 #            generate combined gene activity TSV files
 #
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
-# DATE     : 2017-07-06
+# DATE     : 2017-07-10
 #
 # LICENCE  : MIT <https://opensource.org/licenses/MIT>
 #-------------------------------------------------------------------------------
