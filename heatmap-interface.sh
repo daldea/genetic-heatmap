@@ -6,7 +6,7 @@
 #            them to the heatmap engine
 #
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
-# DATE     : 2017-07-09
+# DATE     : 2017-07-10
 #
 # LICENCE  : MIT <https://opensource.org/licenses/MIT>
 #-------------------------------------------------------------------------------
@@ -47,14 +47,10 @@ HELP_PROMPT="Type 'gmtools help heatmap' for usage notes."
 # create a temporary directory to hold temporary files
 temp_dir=$(mktemp -d --tmpdir "$(basename "$0").XXXXXXXXXX")
 
-# create a temporary file to hold option parser output
-opt_file=$temp_dir/options.conf
-
 # pass all arguments and option metadata to option parser
-~/.genetic-heatmaps/option-parser.py -f -i -n --nozeros -- $@ -- $opt_file
-
-# load option parser output
-source $opt_file
+opt_file=$temp_dir/options.conf
+~/.genetic-heatmaps/option-parser.py -f -i -n --nozeros -- $@ -- "$opt_file"
+source "$opt_file"
 
 # determine overwrite option
 if $n; then
@@ -67,14 +63,14 @@ else
     ow_opt="i"
 fi
 
-# determine include_zeros option to be passed to heatmap-engine.r
+# determine include zeros option
 if $nozeros; then
     include_zeros="FALSE"
 else
     include_zeros="TRUE"
 fi
 
-# remove the option flags from the list of positional arguments
+# remove option flags from the list of positional arguments
 # $1 refers to the gene data filepath and not the first option flag
 shift $((ARG_INDEX - 1))
 
@@ -95,21 +91,21 @@ if ! [[ -f $1 ]]; then
     echo "$HELP_PROMPT"
     exit 1
 else
-    gene_path="$1"
+    gene_path=$1
 fi
 
-# regular expression to detect positive and negative integers and doubles
-signed_double_re='^[+-]?[0-9]*([.][0-9]+)?$'
+# regular expression to detect numbers
+number_regex='^[+-]?[0-9]*([.][0-9]+)?$'
 
-# check that transcription_min is a number
-if ! [[ $2 =~ $signed_double_re ]]; then
+# check that the lower bound is a number
+if ! [[ $2 =~ $number_regex ]]; then
     echo "ERROR: Transcription min is not a number ($2)" >&2
     echo "$HELP_PROMPT"
     exit 1
 fi
 
 # check that the upper bound is a number
-if ! [[ $3 =~ $signed_double_re ]]; then
+if ! [[ $3 =~ $number_regex ]]; then
     echo "ERROR: Transcription max is not a number ($3)" >&2
     echo "$HELP_PROMPT"
     exit 1
@@ -121,18 +117,18 @@ if ! [[ $(echo "$2 < $3" | bc) -eq 1 ]]; then
     echo "$HELP_PROMPT"
     exit 1
 else
-    transcription_min="$2"
-    transcription_max="$3"
+    transcription_min=$2
+    transcription_max=$3
 fi
 
-# determine whether the binding_max was given by checking if  is a number
-if [[ $4 =~ $signed_double_re ]]; then
+# determine whether the binding max was given by checking if it is a number
+if [[ $4 =~ $number_regex ]]; then
     if ! [[ $(echo "$4 > 0" | bc) -eq 1 ]]; then
         echo "ERROR: Binding max ($4) is not greater than 0" >&2
         echo "$HELP_PROMPT"
         exit 1
     fi
-    binding_max="$4"
+    binding_max=$4
     # $5 -> $1 = transcription_file
     shift 4
 else
@@ -147,7 +143,7 @@ if [[ -e $1 ]]; then
     case $ow_opt in
         f)
             # do not prompt user, overwrite file
-            transcription_path="$1"
+            transcription_path=$1
             ;;
         i)
             # prompt user
@@ -158,7 +154,7 @@ if [[ -e $1 ]]; then
                 exit
             else
                 # overwrite file
-                transcription_path="$1"
+                transcription_path=$1
             fi
             ;;
         n)
@@ -169,7 +165,7 @@ if [[ -e $1 ]]; then
             ;;
     esac
 else
-    transcription_path="$1"
+    transcription_path=$1
 fi
 
 # check that the binding heatmap file does not exist
@@ -178,7 +174,7 @@ if [[ -e $2 ]]; then
     case $ow_opt in
         f)
             # do not prompt user, overwrite file
-            binding_path="$2"
+            binding_path=$2
             ;;
         i)
             # prompt user
@@ -189,7 +185,7 @@ if [[ -e $2 ]]; then
                 exit
             else
                 # overwrite file
-                binding_path="$2"
+                binding_path=$2
             fi
             ;;
         n)
@@ -200,14 +196,14 @@ if [[ -e $2 ]]; then
             ;;
     esac
 else
-    binding_path="$2"
+    binding_path=$2
 fi
 
 # remove comments from gene data file
 temp_gene=$temp_dir/parsed_data/gene_data
-sed '/^#/ d' < $gene_path > $temp_gene
+sed '/^#/ d' < "$gene_path" > "$temp_gene"
 
-# pass validated arguments to heatmap-engine.r
-~/.genetic-heatmaps/heatmap-engine.r "$temp_gene" "$include_zeros" \
-    "$transcription_min" "$transcription_max" "$binding_max" \
-    "$transcription_path" "$binding_path"
+# pass validated arguments to the heatmap engine
+~/.genetic-heatmaps/heatmap-engine.r "$temp_gene" $include_zeros \
+    $transcription_min $transcription_max $binding_max "$transcription_path" \
+    "$binding_path"

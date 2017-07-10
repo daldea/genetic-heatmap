@@ -35,7 +35,7 @@ else
 fi
 
 # search for help message in HELP directory
-filepath=~/.genetic-heatmaps/HELP/${filename}
+filepath=~/.genetic-heatmaps/HELP/$filename
 
 # check that help message exists
 if ! [[ -f $filepath ]]; then
