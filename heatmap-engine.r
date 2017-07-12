@@ -25,9 +25,6 @@
 #     TRANSCRIPTION_MIN  : minimum value on the gene transcription scale
 #     TRANSCRIPTION_MAX  : maximum value on the gene transcription scale
 #     BINDING_MAX        : maximum value on the gene binding scale
-#                              if BINDING_MAX is set to NONE, the maximum value
-#                              on the gene binding scale is set to the maximum
-#                              gene binding value in the data
 #     TRANSCRIPTION_PATH : filepath where the gene transcription heatmap will be
 #                          saved
 #     BINDING_PATH       : filepath where the gene binding heatmap will be saved
