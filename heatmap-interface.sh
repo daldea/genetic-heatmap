@@ -6,7 +6,7 @@
 #            them to the heatmap engine
 #
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
-# DATE     : 2017-07-10
+# DATE     : 2017-07-12
 #
 # LICENCE  : MIT <https://opensource.org/licenses/MIT>
 #-------------------------------------------------------------------------------
@@ -42,7 +42,7 @@
 # exit program with error if any command returns an error
 set -e
 
-HELP_PROMPT="Type 'gmtools help heatmap' for usage notes."
+HELP_PROMPT="Type 'ghmtools help heatmap' for usage notes."
 
 # create a temporary directory to hold temporary files
 temp_dir=$(mktemp -d --tmpdir "$(basename "$0").XXXXXXXXXX")
@@ -94,7 +94,7 @@ else
     gene_path=$1
 fi
 
-# regular expression to detect numbers
+# regular expression to match numbers
 number_regex='^[+-]?[0-9]*([.][0-9]+)?$'
 
 # check that the lower bound is a number
@@ -198,6 +198,9 @@ if [[ -e $2 ]]; then
 else
     binding_path=$2
 fi
+
+# create a temporary sub-directory to store parsed data files
+mkdir $temp_dir/parsed_data
 
 # remove comments from gene data file
 temp_gene=$temp_dir/parsed_data/gene_data
