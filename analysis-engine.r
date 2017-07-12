@@ -75,7 +75,7 @@ rna_frame[["binding_flag"]] <- match_vector
 
 # calculate binding scores from binding flags and window size
 score_vector = sum_windows(rna_frame[["binding_flag"]], args[["window_size"]])
-rna_frame[["bindins_score"]] <- score_vector
+rna_frame[["binding_score"]] <- score_vector
 
 # extract output frame from input frame
 output_columns <- c("gene_name", "transcription_score", "binding_score")
@@ -83,4 +83,4 @@ output_frame <- rna_frame[output_columns]
 
 # write output frame to output TSV
 write.table(output_frame, file = args[["output_path"]], quote = FALSE,
-            sep = "\t", row.names = FALSE, col.names = NA)
+            sep = "\t", row.names = FALSE, col.names = FALSE)
