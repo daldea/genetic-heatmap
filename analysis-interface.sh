@@ -6,7 +6,7 @@
 #            them to BETA and the analysis engine
 #
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
-# DATE     : 2017-07-07
+# DATE     : 2017-07-12
 #
 # LICENCE  : MIT <https://opensource.org/licenses/MIT>
 #-------------------------------------------------------------------------------
@@ -44,7 +44,7 @@
 # exit program with error if any command returns an error
 set -e
 
-HELP_PROMPT="Type 'gmtools help analysis' for usage notes."
+HELP_PROMPT="Type 'ghmtools help analysis' for usage notes."
 
 # create a temporary directory to hold temporary files
 temp_dir=$(mktemp -d --tmpdir "$(basename "$0").XXXXXXXXXX")
@@ -66,9 +66,9 @@ else
     ow_opt="i"
 fi
 
-# regular expression to detect positive numbers
+# regular expression to match positive numbers
 positive_number_regex='^[+]?[0-9]*([.][0-9]+)?$'
-# regular expression to detect non-negative integers
+# regular expression to match non-negative integers
 nonnegative_integer_regex='^[+]?[0-9]+$'
 
 if [[ $d == "None" ]]; then
@@ -81,7 +81,7 @@ if ! [[ $d =~ $positive_number_regex ]]; then
     exit 1
 fi
 # convert the binding distance from kbp to bp, round to the nearest integer
-binding_dist=$(python3 -c "print(round(1000*d))")
+binding_dist=$(python3 -c "print(round(1000 * $d))")
 
 if [[ $window == "None" ]]; then
     window=10
@@ -125,13 +125,13 @@ fi
 
 # check that the genome is a supported genome
 case $3 in
-    hh19)
+    "hh19")
         genome="hh19"
         ;;
-    mm9)
+    "mm9")
         genome="mm9"
         ;;
-    \?)
+    *)
         # exit program with error on invalid genome
         echo "ERROR: Invalid genome ($3)" >&2
         echo "$HELP_PROMPT"
@@ -175,22 +175,24 @@ mkdir $temp_dir/parsed_data
 
 # remove comments from transcription data file
 temp_transcription=$temp_dir/parsed_data/transcription_data
-sed '/^#/ d' < "$transcription_path" > "$temp_transcription"
+sed '/^#/d' < "$transcription_path" > "$temp_transcription"
+# replace spaces with tabs in transcription data file
+sed -i "s/ /\t/g" "$temp_transcription"
+
+# remove comments from binding data file
+temp_binding=$temp_dir/parsed_data/binding_data
+sed '/^#/d' < "$binding_path" > "$temp_binding"
+# replace spaces with tabs in binding data file
+sed -i "s/ /\t/g" "$temp_binding"
 
 # determine if binding data is a ChIP-seq data file or a bound gene list file
-if grep -Pq "\t" "$binding_path"; then
-    # convert binding distance from kbp to bp
-    binding_dist=$(echo "1000 * $d" | bc)
+if grep -Pq "\t" "$temp_binding"; then
     # run the BETA genomic analysis program to generate bound gene list file
-    BETA minus -p "$binding_path" -g $genome -d $binding_dist \
+    BETA minus -p "$temp_binding" -g $genome -d $binding_dist \
         -o "$temp_dir/BETA_output" --bl >/dev/null
-    # change binding path from ChIP-seq data file to bound gene list file
-    binding_path=$tmp_dir/BETA_output/NA_targets.txt
+    # remove comments from BETA output file
+    sed '/^#/d' < "$temp_dir/BETA_output/NA_targets.txt" > "$temp_binding"
 fi
-
-# remove comments from bound gene list file
-temp_binding=$temp_dir/parsed_data/binding_data
-sed '/^#/ d' < "$binding_path" > "$temp_binding"
 
 # pass validated arguments to the analysis engine
 ~/.genetic-heatmaps/analysis-engine.r "$temp_transcription" "$temp_binding" \
