@@ -52,7 +52,7 @@ options(warn = default_warn)
 store_arguments <- function(name_vector) {
     # store command line arguments in a list
     argument_list <- as.list(commandArgs(trailingOnly = TRUE))
-    for (index in c(1:length(argument_list))) {
+    for (index in 1:length(argument_list)) {
         # if argument is a numeric string, convert it to double
         if (suppressWarnings(!is.na(as.double(argument_list[index])))) {
             argument_list[index] <- as.double(argument_list[index])
@@ -140,7 +140,7 @@ minimal_theme <- theme(plot.margin = unit(c(0, 0, -0.5, -0.5), "line"),
 # add plus sign to legend text so that both heatmaps are properly aligned
 # are properly aligned
 blue_white_red_scale <- scale_fill_gradient2(labels   = function(x)
-                                                        sprintf("%+d", x),
+                                                            sprintf("%+d", x),
                                              low      = "blue",
                                              mid      = "white",
                                              high     = "red",
@@ -149,7 +149,7 @@ blue_white_red_scale <- scale_fill_gradient2(labels   = function(x)
 
 # color scale for binding heatmap
 black_yellow_scale <- scale_fill_gradient(labels = function(x)
-                                                     sprintf("%+d", x),
+                                                       sprintf("%+d", x),
                                           low    = "black",
                                           high   = "yellow",
                                           guide  = "colorbar")
