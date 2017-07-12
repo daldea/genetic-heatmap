@@ -6,7 +6,7 @@
 #            them to BETA and the analysis engine
 #
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
-# DATE     : 2017-07-06
+# DATE     : 2017-07-07
 #
 # LICENCE  : MIT <https://opensource.org/licenses/MIT>
 #-------------------------------------------------------------------------------
@@ -28,7 +28,7 @@
 # ARGUMENTS:
 #
 #     TRANSCRIPTION_DATA : filepath of the file containing gene transcription
-#                          scores
+#                          data
 #     BINDING_DATA       : filepath of the file containing ChIP-seq data or a
 #                          list of bound genes
 #     GENOME             : reference genome used by BETA (options: hg19, mm9)
@@ -49,14 +49,10 @@ HELP_PROMPT="Type 'gmtools help analysis' for usage notes."
 # create a temporary directory to hold temporary files
 temp_dir=$(mktemp -d --tmpdir "$(basename "$0").XXXXXXXXXX")
 
-# create a temporary file to store option parser output
-opt_file=$temp_dir/options.conf
-
 # pass all arguments and option metadata to option parser
+opt_file=$temp_dir/options.conf
 ~/.genetic-heatmaps/option-parser.py -f -i -n -d VALUE --window VALUE -- $@ -- \
     $opt_file
-
-# load option parser output
 source $opt_file
 
 # determine overwrite option
@@ -70,40 +66,64 @@ else
     ow_opt="i"
 fi
 
-# convert kilobases to bases
-binding_dist=$((d * 1000))
+# regular expression to detect positive numbers
+positive_number_regex='^[+]?[0-9]*([.][0-9]+)?$'
+# regular expression to detect non-negative integers
+nonnegative_integer_regex='^[+]?[0-9]+$'
 
-# remove the option flags from the list of positional arguments
-# $1 refers to the CSV filepath and not the first option flag
+if [[ $d == "None" ]]; then
+    d=10
+fi
+# check that the binding distance is a positive number
+if ! [[ $d =~ $positive_number_regex ]]; then
+    echo "ERROR: Binding distance is not a positive number ($d)" >&2
+    echo "$HELP_PROMPT"
+    exit 1
+fi
+# convert the binding distance from kbp to bp, round to the nearest integer
+binding_dist=$(python3 -c "print(round(1000*d))")
+
+if [[ $window == "None" ]]; then
+    window=10
+fi
+# check that the window size is a positive integer
+if ! [[ $window =~ $nonnegative_integer_regex ]]; then
+    echo "ERROR: Window size is not a non-negative integer ($window)" >&2
+    echo "$HELP_PROMPT"
+    exit 1
+fi
+
+# remove option flags from the list of positional arguments
+# $1 refers to the transcription data filepath and not the first option flag
 shift $((ARG_INDEX - 1))
 
-# check that the RNA-seq file is a valid file
+# check that the transcription data file is a valid file
 if ! [[ -f $1 ]]; then
     if ! [[ -e $1 ]]; then
-        echo "ERROR: RNA-seq file does not exist ($1)" >&2
+        echo "ERROR: Transcription data file does not exist ($1)" >&2
     else
-        echo "ERROR: Invalid RNA-seq file ($1)" >&2
+        echo "ERROR: Invalid transcription data file ($1)" >&2
     fi
     echo "$HELP_PROMPT"
     exit 1
 else
-    rna_path="$1"
+    transcription_path="$1"
 fi
 
-# check that the ChIP-seq file is a valid file
+# check that the binding data file is a valid file
 if ! [[ -f $2 ]]; then
     if ! [[ -e $2 ]]; then
-        echo "ERROR: ChIP-seq file does not exist ($2)" >&2
+        echo "ERROR: Binding data file does not exist ($2)" >&2
     else
-        echo "ERROR: Invalid ChIP-seq file ($2)" >&2
+        echo "ERROR: Invalid binding data file ($2)" >&2
     fi
     echo "$HELP_PROMPT"
     exit 1
 else
-    chip_path="$2"
+    binding_path="$2"
 fi
 
-# check that the genome is valid
+# check that the genome is a supported genome
 case $3 in
     hh19)
         genome="hh19"
@@ -119,20 +139,59 @@ case $3 in
         ;;
 esac
 
+# check that the gene data file does not exist
+if [[ -e $4 ]]; then
+    # if it does exist, check option to determine whether to prompt user
+    case $ow_opt in
+        f)
+            # do not prompt user, overwrite file
+            gene_path=$4
+            ;;
+        i)
+            # prompt user
+            echo "A file already exists at $4"
+            read -p "Type y to overwrite that file, type n to exit: " yn
+            if ! [[ $yn == "y" || $yn == "Y" ]]; then
+                # do not overwrite file, exit program
+                exit
+            else
+                # overwrite file
+                gene_path=$4
+            fi
+            ;;
+        n)
+            # do not prompt user, do not overwrite, exit program with error
+            echo "ERROR: A file already exists at $4" >&2
+            echo "$HELP_PROMPT"
+            exit 1
+            ;;
+    esac
+else
+    gene_path=$4
+fi
+
 # create a temporary sub-directory to store parsed data files
 mkdir $temp_dir/parsed_data
 
-# remove comments from RNA-seq data file so that it can be read by R
-temp_rna_data=$temp_dir/parsed_data/rna_data
-sed '/^#/ d' < $rna_path > $temp_rna_data
+# remove comments from transcription data file
+temp_transcription=$temp_dir/parsed_data/transcription_data
+sed '/^#/ d' < "$transcription_path" > "$temp_transcription"
 
-# run the BETA minus genomic analysis program to generate ChIP-seq gene list
-# supress BETA terminal output
-BETA minus -p $chip_path -g $genome -d $binding_dist -o $temp_dir/BETA_output \
-   --bl >/dev/null
+# determine if binding data is a ChIP-seq data file or a bound gene list file
+if grep -Pq "\t" "$binding_path"; then
+    # convert binding distance from kbp to bp
+    binding_dist=$(echo "1000 * $d" | bc)
+    # run the BETA genomic analysis program to generate bound gene list file
+    BETA minus -p "$binding_path" -g $genome -d $binding_dist \
+        -o "$temp_dir/BETA_output" --bl >/dev/null
+    # change binding path from ChIP-seq data file to bound gene list file
+    binding_path=$tmp_dir/BETA_output/NA_targets.txt
+fi
 
-# remove comments from ChIP-seq gene list so that it can read by R
-temp_beta_data=$temp_dir/parsed_data/beta_data
-sed '/^#/ d' < $tmp_dir/BETA_output/NA_targets.txt > $temp_beta_data
+# remove comments from bound gene list file
+temp_binding=$temp_dir/parsed_data/binding_data
+sed '/^#/ d' < "$binding_path" > "$temp_binding"
 
-# TODO: connect to analysis-engine.r
+# pass validated arguments to the analysis engine
+~/.genetic-heatmaps/analysis-engine.r "$temp_transcription" "$temp_binding" \
+    $window "$gene_path"
