@@ -1,0 +1,46 @@
+#!/bin/bash
+
+#===============================================================================
+# TITLE    : ghmtools
+# ABSTRACT : An alias of '~/.genetic-heatmaps/terminal-interface.sh'
+#
+# AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
+# DATE     : 2017-06-29
+#
+# LICENCE  : MIT <https://opensource.org/licenses/MIT>
+#-------------------------------------------------------------------------------
+# USAGE:
+#
+#     ghmtools OPERATION [OPTIONS] ARGUMENTS :
+#         execute a given operation with given options and arguments
+#
+#     ghmtools help :
+#         display a list of operations
+#
+#     ghmtools help OPERATION :
+#         display the help message for a particular operation
+#
+# OPERATIONS:
+#
+#     analysis : create gene actitity TSV files from RNA-seq and ChIP-seq data
+#                files
+#     heatmaps : create gene transcription and gene binding heatmaps from gene
+#                activity TSV files
+#
+# NOTES:
+#
+#     This program should be located in the '~/bin' directory so that the shell
+#     recognizes the 'ghmtools' command.
+#-------------------------------------------------------------------------------
+# ALIAS PROGRESSION:
+#     1. ghmtools OPERATION [OPTIONS] ARGUMENTS
+#     2. ~/bin/ghmtools OPERATION [OPTIONS] ARGUMENTS
+#     3. ~/.genetic-heatmaps/terminal-interface.sh OPERATION [OPTIONS] ARGUMENTS
+#     4. ~/.genetic-heatmaps/OPERATION-interface.sh [OPTIONS] ARGUMENTS
+#===============================================================================
+
+# exit program with error if any command returns an error
+set -e
+
+# pass all arguments to "terminal-interface.sh"
+~/.genetic-heatmaps/terminal-interface.sh "$@"

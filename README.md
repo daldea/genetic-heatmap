@@ -1,21 +1,38 @@
-# Genetic Heatmaps
+# Genetic Heatmap Tools
 
-The genetic heatmaps program creates minimally formatted, easy-to-read vector image heatmaps of RNA-seq gene transcription and ChIP gene binding data.
+Genetic Heatmap Tools is a program that creates easy-to-read heatmaps of gene transcription and transcription factor binding data. These heatmaps are a visually attractive method of communicating how transcription factor binding affects gene expression.
 
-Although many [Gene Set Enrichment Analysis](https://en.wikipedia.org/wiki/Gene_set_enrichment_analysis) programs can also be used to create heatmaps, those heatmaps are typically small raster images cluttered with additional graphs and annotations, rendering them ill-suited for publication:
+Although many [Gene Set Enrichment Analysis](https://en.wikipedia.org/wiki/Gene_set_enrichment_analysis) programs can also be used to create similar heatmaps, those heatmaps are typically cluttered with additional graphs and annotations, rendering them ill-suited for publication:
 
-<img src="http://compbio.dfci.harvard.edu/pubs/ovarian_expression/html_results/gsea/gsea_s1.Gsea.1275426366765/enplot_LEADING_EDGE_247.png" title="A poorly designed heatmap made by another program" width="500"/>
+<img src="https://image.ibb.co/iWpt7v/gsea.png" title="A poorly designed heatmap made by another program" width="500"/>
 
 In contrast, the heatmaps produced by the genetic heatmaps program:
 
-* are completely free of any built-in annotations
-* use easy-to-read color scales that clearly display the necessary data
+* are completely free of distracting annotations
+* use easy-to-read color scales that clearly display the data
 * can be expanded to any size without losing resolution
 
-<img src="https://image.ibb.co/e7UUsk/binding.png" title="A gene binding heatmap produced by this program" width="500"/>
-<img src="https://image.ibb.co/fCAcCk/transcription.png" title="A gene transcription heatmap produced by this program" width="500"/>
+<img src="https://image.ibb.co/ei52Za/b.png" title="A gene binding heatmap produced by this program" width="500"/>
+<img src="https://image.ibb.co/dH91Sv/t.png" title="A gene transcription heatmap produced by this program" width="500"/>
 
 ## Installation
+
+### Automatic Installation
+
+1. [Download](https://raw.githubusercontent.com/dennisaldea/genetic-heatmaps/analysis/installer.sh) the installer.
+   ```
+   cd ~/Downloads
+   wget https://raw.githubusercontent.com/dennisaldea/genetic-heatmaps/analysis/installer.sh
+   ```
+
+2. Run the installer.
+   ```
+   ./installer.sh
+   ```
+
+The installer only installs Genetic Heatmap Tools for the user running the script. To install Genetic Heatmap Tools for all users, modify the steps listed in the [Manual Installation](#manual-installation) section.
+
+### Manual Installation
 
 1. [Download](https://github.com/dennisaldea/genetic-heatmaps/archive/master.tar.gz) the repository.
    ```
@@ -38,83 +55,132 @@ In contrast, the heatmaps produced by the genetic heatmaps program:
 4. Mark the code files as executable.
    ```
    cd ~/.genetic-heatmaps
-   chmod 755 heatmap terminal-interface.sh heatmap-generator.r
+   chmod 755 *
+   chmod 644 README.md LICENSE HELP/*
    ```
 
-5. Copy the `heatmap` file to the `~/bin` directory.
+5. Copy the alias file to the `~/bin` directory.
    ```
-   cp ~/.genetic-heatmaps/heatmap ~/bin
+   cp ~/.genetic-heatmaps/ghmtools ~/bin
    ```
 
 ## Usage
 
-### Syntax
+Genetic Heatmap Tools has three operations, which are described in the table below.
+
+| Operation  |                                    Description                                    |
+|    ---     |                                        ---                                        |
+| `analysis` | create gene activity files from RNA-seq data, ChIP-seq data, and bound gene lists |
+| `heatmap`  | create gene transcription and gene binding heatmaps from gene activity files      |
+| `help`     | display the usage notes for a specified operation                                 |
+
+Typical procedure:
+
+1. Input RNA-seq data and either ChIP-seq data or a list of bound genes into the `analysis` operation.
+2. Confirm that the resulting gene activity file was properly created.
+3. Input the gene activity file into the `heatmap` operation.
+
+### Analysis
 
 ```
-heatmap [OPTION]... CSV_FILE LOWER_BOUND UPPER_BOUND TRANSCRIPTION_FILE BINDING_FILE
+ghmtools analysis [OPTIONS] TRANSCRIPTION_DATA BINDING_DATA GENOME GENE_FILE
 ```
 
-### Options
+#### Options
 
-|   Option    |                   Description                   |
-|     ---     |                       ---                       |
-| `--help`    | display usage documentation                     |
-| `--nozeros` | do not map genes with zero transcription values |
-| `-f`        | do not prompt before overwriting files          |
-| `-i`        | prompt before overwriting files _(default)_     |
-| `-n`        | do not overwrite files                          |
+|     Option       |                                            Description                                            |
+|       ---        |                                                ---                                                |
+| `-f`             | do not prompt before overwriting files                                                            |
+| `-i`             | prompt before overwriting files _(default)_                                                       |
+| `-n`             | do not overwrite files                                                                            |
+| `-d <NUMBER>`    | maximum distance (in kilobases) between a bound gene and the nearest binding site _(default: 10)_ |
+| `--window <INT>` | number of genes to be summed to calculate a binding score _(default: 10)_                         |
 
 If neither `-f`, `-i`, nor `-n` are given, the `-i` option is implied.  
 If conflicting options are given, the last option given takes effect.
 
-### Arguments
+#### Arguments
 
-|       Argument       |                                   Description                                    |
-|         ---          |                                       ---                                        |
-| `CSV_FILE`           | filepath of the CSV file containing gene transcription and gene binding data     |
-| `TRANSCRIPTION_MAX`  | minimum value on the gene transcription scale                                    |
-| `TRANSCRIPTION_MIN`  | maximum value on the gene transcription scale                                    |
-| `BINDING_MAX`        | maximum value on the gene binding scale _(optional)_                             |
-| `TRANSCRIPTION_FILE` | filepath where the gene transcription heatmap will be saved                      |
-| `BINDING_FILE`       | filepath where the gene binding heatmap will be saved                            |
+|      Argument        |                              Description                               |
+|         ---          |                                  ---                                   |
+| `TRANSCRIPTION_DATA` | filepath of the file containing gene transcription scores              |
+| `BINDING_DATA`       | filepath of the file containing ChIP-seq data or a list of bound genes |
+| `GENOME`             | reference genome used by BETA _(options: hg19, mm9)_                   |
+| `GENE_FILE`          | filepath where the gene activity file will be saved                    |
 
-If `BINDING_MAX` is not given or is set to `NONE`, the maximum gene binding value in the data set becomes the maximum value on the gene binding scale.
+It is not necessary to specify whether `BINDING_DATA` is a ChIP-seq data file or a list of bound genes, since the analysis interface can determine this automatically.
 
 ### Example
 
 ```
-heatmap ~/research/data/foo.csv -2.5 2.5 ~/research/figures/bar1.svg ~/research/figures/bar2.svg
+ghmtools analysis foo1.csv foo2.svg mm9 bar.csv
 ```
 
-* use the data at `~/research/data/foo.csv`
-* create a gene transcription heatmap at `~/research/figures/bar1.svg`
-  * scale the heatmap from `-2.5` to `2.5`
-* create a gene binding heatmap at `~/research/data/bar2.svg`
+* use the gene transcription data at `foo1.csv`
+* use the gene binding data at `foo2.csv`
+  * create a list of bound genes using the `mm9` genome
+* create a gene activity file at `bar.csv`
 
-### Making your first heatmap
+### Heatmap
 
-1. Use your preferred spreadsheet editor to create a new spreadsheet.
+```
+ghmtools heatmap [OPTIONS] GENE_DATA TRANSCRIPTION_MIN TRANSCRIPTION_MAX [BINDING_MAX] TRANSCRIPTION_FILE BINDING_FILE
+```
 
-2. Copy-and-paste the gene transcription data into the first column.
+#### Options
 
-3. Copy-and-paste the gene binding data into the second column.
-   * At this point, your spreadsheet should look similar to the example below (albeit with different data).  
-     <img src="https://image.ibb.co/niAvHk/spreadsheet.png" title="An example spreadsheet" width="250"/>
+|   Option    |                   Description                   |
+|     ---     |                       ---                       |
+| `-f`        | do not prompt before overwriting files          |
+| `-i`        | prompt before overwriting files _(default)_     |
+| `-n`        | do not overwrite files                          |
+| `--nozeros` | do not map genes with zero transcription values |
 
-4. Save the spreadsheet as a comma-separated-values (CSV) file.
+If neither `-f`, `-i`, nor `-n` are given, the `-i` option is implied.  
+If conflicting options are given, the last option given takes effect.
 
-5. Open a terminal window and type the command:
-   ```
-   heatmap CSV_FILE LOWER_BOUND UPPER_BOUND TRANSCRIPTION_FILE BINDING_FILE
-   ```  
-   * Replace the uppercase terms with your arguments.
-   * Read the [usage](https://github.com/dennisaldea/genetic-heatmaps#usage) section for more help.
+#### Arguments
 
-6. Ensure that the heatmaps were correctly saved to `TRANSCRIPTION_FILE` and `BINDING_FILE`.
+|      Argument        |                                   Description                                    |
+|         ---          |                                       ---                                        |
+| `GENE_DATA`          | filepath of the file containing gene transcription and gene binding data         |
+| `TRANSCRIPTION_MIN`  | minimum value on the gene transcription scale                                    |
+| `TRANSCRIPTION_MAX`  | maximum value on the gene transcription scale                                    |
+| `BINDING_MAX`        | maximum value on the gene binding scale _(optional)_                             |
+| `TRANSCRIPTION_FILE` | filepath where the gene transcription heatmap will be saved                      |
+| `BINDING_FILE`       | filepath where the gene binding heatmap will be saved                            |
+
+If `BINDING_MAX` is not given or is set to `NONE`, the maximum value on the gene binding scale is set to the maximum gene binding value in the data.
+
+### Example
+
+```
+ghmtools heatmap foo.csv -2.5 2.5 6 bar1.svg bar2.png
+```
+
+* use the data at `foo.csv`
+* create a gene transcription heatmap at `bar1.svg`
+  * scale the transcription scores from `-2.5` to `2.5`
+* create a gene binding heatmap at `bar2.png`
+  * scale the binding scores from 0 to `6`
+
+### Help
+
+```
+ghmtools help <OPERATION>
+```
+
+```
+ghmtools --help <OPERATION>
+```
+
+If no operation is given, `ghmtools help` displays a list of operations.
 
 ## Dependencies
 
 * BASH
+* Python 3
+* [BETA](http://cistrome.org/BETA/)
 * R
   * ggplot2
   * svglite
