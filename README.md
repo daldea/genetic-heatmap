@@ -174,7 +174,7 @@ ghmtools help <OPERATION>
 ghmtools --help <OPERATION>
 ```
 
-If no operation is given, `ghmtools help` displays a list of operations
+If no operation is given, `ghmtools help` displays a list of operations.
 
 ## Dependencies
 
