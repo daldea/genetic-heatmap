@@ -6,7 +6,7 @@
 #            and passes the following arguments to that interface
 #
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
-# DATE     : 2017-06-29
+# DATE     : 2017-07-13
 #
 # LICENCE  : MIT <https://opensource.org/licenses/MIT>
 #-------------------------------------------------------------------------------
@@ -38,8 +38,13 @@ set -e
 
 HELP_PROMPT="Type 'ghmtools help' for usage notes."
 
-# remove operation name from command line arguments
-operation=$1; shift
+# if no arguments were given, assume 'help' operation
+if [ -z "$1" ]; then
+    operation="help"
+else
+    # remove operation name from command line arguments
+    operation=$1; shift
+fi
 
 # replace '--help' operation with 'help' operation
 if [[ $operation == "--help" ]]; then
