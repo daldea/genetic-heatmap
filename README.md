@@ -110,7 +110,7 @@ If conflicting options are given, the last option given takes effect.
 
 It is not necessary to specify whether `BINDING_DATA` is a ChIP-seq data file or a list of bound genes, since the analysis interface can determine this automatically.
 
-### Example
+#### Example
 
 ```
 ghmtools analysis foo1.csv foo2.svg mm9 bar.csv
@@ -152,7 +152,7 @@ If conflicting options are given, the last option given takes effect.
 
 If `BINDING_MAX` is not given or is set to `NONE`, the maximum value on the gene binding scale is set to the maximum gene binding value in the data.
 
-### Example
+#### Example
 
 ```
 ghmtools heatmap foo.csv -2.5 2.5 6 bar1.svg bar2.png
