@@ -19,18 +19,18 @@ In contrast, the heatmaps produced by the genetic heatmaps program:
 
 ### Automatic Installation
 
-1. [Download](https://raw.githubusercontent.com/dennisaldea/genetic-heatmaps/analysis/installer.sh) the installer script.
+1. [Download](https://raw.githubusercontent.com/dennisaldea/genetic-heatmaps/analysis/installer.sh) the installer.
    ```
    cd ~/Downloads
    wget https://raw.githubusercontent.com/dennisaldea/genetic-heatmaps/analysis/installer.sh
    ```
 
-2. Run the installation script.
+2. Run the installer.
    ```
    ./installer.sh
    ```
 
-_Note:_ The installer script only installs Genetic Heatmap Tools for the user running the script. To install Genetic Heatmap Tools for all users, modify the steps listed in the [Manual Installation](https://github.com/dennisaldea/genetic-heatmaps#manual-installation) section.
+The installer only installs Genetic Heatmap Tools for the user running the script. To install Genetic Heatmap Tools for all users, modify the steps listed in the [Manual Installation](https://github.com/dennisaldea/genetic-heatmaps#manual-installation) section.
 
 ### Manual Installation
 
