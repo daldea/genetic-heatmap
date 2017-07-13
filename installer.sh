@@ -2,8 +2,7 @@
 
 #===============================================================================
 # TITLE    : installer.sh
-# ABSTRACT : A BASH script that creats the proper directory structure needed to
-#            run the genetic-heatmaps program
+# ABSTRACT : A BASH script that installs Genetic Heatmap Tools for a single user
 #
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
 # DATE     : 2017-07-12
