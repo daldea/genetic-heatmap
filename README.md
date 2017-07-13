@@ -1,6 +1,6 @@
-# Genetic Heatmaps
+# Genetic Heatmap Tools
 
-The genetic heatmaps program creates minimally formatted, easy-to-read heatmaps of gene transcription and transcription factor binding data. These heatmaps are a visually attractive method of communicating how transcription factor binding affects gene expression.
+Genetic Heatmap Tools is a program that creates easy-to-read heatmaps of gene transcription and transcription factor binding data. These heatmaps are a visually attractive method of communicating how transcription factor binding affects gene expression.
 
 Although many [Gene Set Enrichment Analysis](https://en.wikipedia.org/wiki/Gene_set_enrichment_analysis) programs can also be used to create similar heatmaps, those heatmaps are typically cluttered with additional graphs and annotations, rendering them ill-suited for publication:
 
@@ -16,6 +16,23 @@ In contrast, the heatmaps produced by the genetic heatmaps program:
 <img src="https://image.ibb.co/dH91Sv/t.png" title="A gene transcription heatmap produced by this program" width="500"/>
 
 ## Installation
+
+### Automatic Installation
+
+1. [Download](https://raw.githubusercontent.com/dennisaldea/genetic-heatmaps/analysis/installer.sh) the installer script.
+   ```
+   cd ~/Downloads
+   wget https://raw.githubusercontent.com/dennisaldea/genetic-heatmaps/analysis/installer.sh
+   ```
+
+2. Run the installation script.
+   ```
+   ./installer.sh
+   ```
+
+_Note:_ The installer script only installs Genetic Heatmap Tools for the user running the script. To install Genetic Heatmap Tools for all users, modify the steps listed in the [Manual Installation](https://github.com/dennisaldea/genetic-heatmaps#manual-installation) section.
+
+### Manual Installation
 
 1. [Download](https://github.com/dennisaldea/genetic-heatmaps/archive/master.tar.gz) the repository.
    ```
@@ -38,12 +55,13 @@ In contrast, the heatmaps produced by the genetic heatmaps program:
 4. Mark the code files as executable.
    ```
    cd ~/.genetic-heatmaps
-   chmod 755 heatmap terminal-interface.sh heatmap-generator.r
+   chmod 755 *
+   chmod 644 README.md LICENSE HELP/*
    ```
 
-5. Copy the `heatmap` file to the `~/bin` directory.
+5. Copy the alias file to the `~/bin` directory.
    ```
-   cp ~/.genetic-heatmaps/heatmap ~/bin
+   cp ~/.genetic-heatmaps/ghmtools ~/bin
    ```
 
 ## Usage
