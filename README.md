@@ -1,19 +1,19 @@
 # Genetic Heatmaps
 
-The genetic heatmaps program creates minimally formatted, easy-to-read vector image heatmaps of RNA-seq gene transcription and ChIP gene binding data.
+The genetic heatmaps program creates minimally formatted, easy-to-read heatmaps of gene transcription and transcription factor binding data. These heatmaps are a visually attractive method of communicating how transcription factor binding affects gene expression.
 
-Although many [Gene Set Enrichment Analysis](https://en.wikipedia.org/wiki/Gene_set_enrichment_analysis) programs can also be used to create heatmaps, those heatmaps are typically small raster images cluttered with additional graphs and annotations, rendering them ill-suited for publication:
+Although many [Gene Set Enrichment Analysis](https://en.wikipedia.org/wiki/Gene_set_enrichment_analysis) programs can also be used to create similar heatmaps, those heatmaps are typically cluttered with additional graphs and annotations, rendering them ill-suited for publication:
 
-<img src="http://compbio.dfci.harvard.edu/pubs/ovarian_expression/html_results/gsea/gsea_s1.Gsea.1275426366765/enplot_LEADING_EDGE_247.png" title="A poorly designed heatmap made by another program" width="500"/>
+<img src="https://image.ibb.co/iWpt7v/gsea.png" title="A poorly designed heatmap made by another program" width="500"/>
 
 In contrast, the heatmaps produced by the genetic heatmaps program:
 
-* are completely free of any built-in annotations
-* use easy-to-read color scales that clearly display the necessary data
+* are completely free of distracting annotations
+* use easy-to-read color scales that clearly display the data
 * can be expanded to any size without losing resolution
 
-<img src="https://image.ibb.co/e7UUsk/binding.png" title="A gene binding heatmap produced by this program" width="500"/>
-<img src="https://image.ibb.co/fCAcCk/transcription.png" title="A gene transcription heatmap produced by this program" width="500"/>
+<img src="https://image.ibb.co/ei52Za/b.png" title="A gene binding heatmap produced by this program" width="500"/>
+<img src="https://image.ibb.co/dH91Sv/t.png" title="A gene transcription heatmap produced by this program" width="500"/>
 
 ## Installation
 
