@@ -19,10 +19,10 @@ In contrast, the heatmaps produced by the genetic heatmaps program:
 
 ### Automatic Installation
 
-1. [Download](https://raw.githubusercontent.com/dennisaldea/genetic-heatmaps/analysis/installer.sh) the installer.
+1. [Download](https://raw.githubusercontent.com/dennisaldea/genetic-heatmaps/master/installer.sh) the installer.
    ```
    cd ~/Downloads
-   wget https://raw.githubusercontent.com/dennisaldea/genetic-heatmaps/analysis/installer.sh
+   wget https://raw.githubusercontent.com/dennisaldea/genetic-heatmaps/master/installer.sh
    ```
 
 2. Run the installer.
