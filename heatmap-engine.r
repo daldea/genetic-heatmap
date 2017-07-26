@@ -137,7 +137,7 @@ minimal_theme <- theme(plot.margin = unit(c(0, 0, -0.5, -0.5), "line"),
 # add plus sign to legend text so that both heatmaps are properly aligned
 # are properly aligned
 blue_white_red_scale <- scale_fill_gradient2(labels   = function(x)
-                                                            sprintf("%+d", x),
+                                                            format_label(x, 5),
                                              low      = "blue",
                                              mid      = "white",
                                              high     = "red",
@@ -146,10 +146,22 @@ blue_white_red_scale <- scale_fill_gradient2(labels   = function(x)
 
 # color scale for binding heatmap
 black_yellow_scale <- scale_fill_gradient(labels = function(x)
-                                                       sprintf("%+d", x),
+                                                       format_label(x, 5),
                                           low    = "black",
                                           high   = "yellow",
                                           guide  = "colorbar")
+
+# format integers and floating-point numbers to fill a field of a given length
+# include leading positive signs, leading zeros and pad with trailing zeros
+format_label <- function(value, width) {
+    # generate format string for given width
+    format <- sprintf("%%+#0%df", width)
+    # include leading positive signs, leading zeros and trailing zero padding
+    label <- sprintf(format, value)
+    # truncate to given width
+    label <- substr(label, 1, width)
+    return(label)
+}
 
 # read arguments from command line
 argument_names <- c("csv_path", "include_zeros", "transcription_min",
