@@ -7,7 +7,7 @@
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
 # DATE     : 2017-06-29
 #
-# LICENCE  : MIT <https://opensource.org/licenses/MIT>
+# LICENSE  : MIT <https://opensource.org/licenses/MIT>
 #-------------------------------------------------------------------------------
 # USAGE:
 #
