@@ -10,29 +10,30 @@
 #
 # LICENSE  : MIT <https://opensource.org/licenses/MIT>
 #-------------------------------------------------------------------------------
-# USAGE:
+# SYNOPSIS:
 #
-#     ./heatmap-engine.r GENE_PATH INCLUDE_ZEROS TRANSCRIPTION_MIN
-#         TRANSCRIPTION_MAX BINDING_MAX TRANSCRIPTION_PATH BINDING_PATH
+#     ./heatmap-engine.r <gene-path> <include-zeros> <transcription-min>
+#         <transcription-max> <binding-max> <transcription-path> <binding-path>
 #
-# ARGUMENTS:
+# DESCRIPTION:
 #
-#     GENE_PATH          : filepath of the file containing gene transcription
-#                          and gene binding data
-#     INCLUDE_ZEROS      : TRUE  -> map genes with zero transcription values
-#                          FALSE -> do not map genes with zero transcription
-#                                   values
-#     TRANSCRIPTION_MIN  : minimum value on the gene transcription scale
-#     TRANSCRIPTION_MAX  : maximum value on the gene transcription scale
-#     BINDING_MAX        : maximum value on the gene binding scale
-#     TRANSCRIPTION_PATH : filepath where the gene transcription heatmap will be
-#                          saved
-#     BINDING_PATH       : filepath where the gene binding heatmap will be saved
+#     <gene-path>          : filepath of the file containing gene transcription
+#                            and gene binding data
+#     <include-zeros>      : TRUE  -> map genes with zero transcription values
+#                            FALSE -> do not map genes with zero transcription
+#                                     values
+#     <transcription-min>  : minimum value on the gene transcription scale
+#     <transcription-max>  : maximum value on the gene transcription scale
+#     <binding-max>        : maximum value on the gene binding scale
+#     <transcription-path> : filepath where the gene transcription heatmap will
+#                            be saved
+#     <binding-path>       : filepath where the gene binding heatmap will be
+#                            saved
 #
 # NOTES:
 #
-#     If BINDING_MAX is set to NONE, the maximum value on the gene binding scale
-#     is set to the maximum gene binding value in the data.
+#     If <binding-max> is set to NONE, the maximum value on the gene binding
+#     scale is set to the maximum gene binding value in the data.
 #===============================================================================
 
 # save the default warning option

@@ -1,17 +1,20 @@
-USAGE:
+SYNOPSIS:
 
-    ghmtools OPERATION [OPTIONS] ARGUMENTS :
+    ghmtools <operation> [<option>...] <argument>...
         execute a given operation with given options and arguments
 
-    ghmtools help :
+    ghmtools help
         display a list of operations
 
-    ghmtools help OPERATION :
+    ghmtools help <operation>
         display the help message for a given operation
 
 OPERATIONS:
 
-    analysis : create gene activity files from RNA-seq data, ChIP-seq data, and
-               bound gene lists
-    heatmap  : create gene transcription and gene binding heatmaps from gene
-               activity files
+    analysis
+        create gene activity files from RNA-seq data, ChIP-seq data, and bound
+        bound gene lists
+
+    heatmap
+        create gene transcription and gene binding heatmaps from gene activity
+        files

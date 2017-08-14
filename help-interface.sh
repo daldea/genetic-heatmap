@@ -9,10 +9,10 @@
 #
 # LICENSE  : MIT <https://opensource.org/licenses/MIT>
 #-------------------------------------------------------------------------------
-# USAGE:
+# SYNOPSIS:
 #
-#     ghmtools help           : display a list of operations
-#     ghmtools help OPERATION : display the help message for a given operation
+#     ghmtools help             : display a list of operations
+#     ghmtools help <operation> : display the help message for a given operation
 #===============================================================================
 
 # exit program with error if any command returns an error

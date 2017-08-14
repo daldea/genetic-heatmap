@@ -10,33 +10,32 @@
 #
 # LICENSE  : MIT <https://opensource.org/licenses/MIT>
 #-------------------------------------------------------------------------------
-# USAGE:
+# SYNOPSIS:
 #
-#     ghmtools analysis [OPTIONS] TRANSCRIPTION_DATA BINDING_DATA GENOME
-#         GENE_FILE
+#     ghmtools analysis [-f | -i | -n] [-d <binding-distance>]
+#         [--window=<window-size>] <transcription-data> <binding-data> <genome>
+#         <gene-file>
 #
-# OPTIONS:
+# DESCRIPTION:
 #
-#     -f                : do not prompt before overwriting files
-#     -i                : prompt before overwriting files (default)
-#     -n                : do not overwrite files
-#     -d <NUMBER>       : maximum distance (in kilobases) between a bound gene
-#                         and the nearest binding site (default: 10)
-#     --window <NUMBER> : number of genes to be summed to calculate a binding
-#                         score (default: 10)
-#
-# ARGUMENTS:
-#
-#     TRANSCRIPTION_DATA : filepath of the file containing gene transcription
-#                          data
-#     BINDING_DATA       : filepath of the file containing ChIP-seq data or a
-#                          list of bound genes
-#     GENOME             : reference genome used by BETA (options: hg19, mm9)
-#     GENE_FILE          : filepath where the gene activity file will be saved
+#     -f                     : do not prompt before overwriting files
+#     -i                     : prompt before overwriting files (default)
+#     -n                     : do not overwrite files
+#     -d <binding-distance>  : maximum distance (in kilobases) between a bound
+#                              gene and the nearest binding site (default: 10)
+#     --window=<window-size> : number of genes to be summed to calculate a
+#                              binding score (default: 10)
+#     <transcription-data>   : filepath of the file containing gene
+#                              transcription data
+#     <binding-data>         : filepath of the file containing ChIP-seq data or
+#                              a list of bound genes
+#     <genome>               : genome used by BETA (options: hg19, mm9)
+#     <gene-file>            : filepath where the gene activity file will be
+#                              saved
 #
 # NOTES:
 #
-#     It is not necessary to specify whether BINDING_DATA is a ChIP-seq data
+#     It is not necessary to specify whether <binding-data> is a ChIP-seq data
 #     file or a list of bound genes, since the analysis interface can determine
 #     this automatically.
 #===============================================================================

@@ -1,27 +1,40 @@
 USAGE:
 
-    ghmtools heatmap [OPTIONS] GENE_DATA TRANSCRIPTION_MIN TRANSCRIPTION_MAX
-        [BINDING_MAX] TRANSCRIPTION_FILE BINDING_FILE
+    ghmtools heatmap [-f | -i | -n] [--no-zeros] <gene-data> <transcription-min>
+        <transcription-max> [<binding-max>] <transcription-file> <binding-file>
 
 OPTIONS:
 
-    -f        : do not prompt before overwriting files
-    -i        : prompt before overwriting files (default)
-    -n        : do not overwrite files
-    --nozeros : do not map genes with zero transcription values
+    -f
+        do not prompt before overwriting files
+    -i
+        prompt before overwriting files (default)
+    -n
+        do not overwrite files
+    --no-zeros
+        do not map genes with zero transcription values
 
 ARGUMENTS:
 
-    GENE_DATA          : filepath of the file containing gene transcription and
-                         gene binding data
-    TRANSCRIPTION_MIN  : minimum value on the gene transcription scale
-    TRANSCRIPTION_MAX  : maximum value on the gene transcription scale
-    BINDING_MAX        : maximum value on the gene binding scale
-    TRANSCRIPTION_FILE : filepath where the gene transcription heatmap will be
-                         saved
-    BINDING_FILE       : filepath where the gene binding heatmap will be saved
+    <gene-data>
+        filepath of the file containing gene transcription and gene binding data
+
+    <transcription-min>
+        minimum value on the gene transcription scale
+
+    <transcription-max>
+        maximum value on the gene transcription scale
+
+    <binding-max>
+        maximum value on the gene binding scale (optional)
+
+    <transcription-file>
+        filepath where the gene transcription heatmap will be saved
+
+    <binding-file>
+        filepath where the gene binding heatmap will be saved
 
 NOTES:
 
-    If BINDING_MAX is not given or is set to NONE, the maximum value on the gene
-    binding scale is set to the maximum gene binding value in the data.
+    If <binding-max> is not given, the maximum value on the gene binding scale
+    is set to the maximum gene binding value in the data.
