@@ -12,11 +12,11 @@
 #-------------------------------------------------------------------------------
 # SYNOPSIS:
 #
-#     ghmtools <operation> [<option>...] <argument>... : execute a operation
+#     ghmtools <operation> [<option>...] <argument>... : execute an operation
 #     ghmtools help                                    : display a list of
 #                                                        operations
 #     ghmtools help <operation>                        : display the help
-#                                                        message for a
+#                                                        message for an
 #                                                        operation
 #
 # OPERATIONS:
