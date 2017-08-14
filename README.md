@@ -59,9 +59,9 @@ The installer only installs Genetic Heatmap Tools for the user running the scrip
    chmod 644 README.md LICENSE HELP/*
    ```
 
-5. Copy the alias file to the `~/bin` directory.
+5. Make a symbolic link to the terminal interface in the `~/bin` directory.
    ```
-   cp ~/.genetic-heatmaps/ghmtools ~/bin
+   ln -s ~/.genetic-heatmaps/terminal-interface.sh ~/bin/ghmtools
    ```
 
 ## Usage
