@@ -43,13 +43,40 @@ set -e
 
 HELP_PROMPT="Type 'ghmtools help heatmap' for usage notes."
 
-# create a temporary directory to hold temporary files
-temp_dir=$(mktemp -d --tmpdir "$(basename "$0").XXXXXXXXXX")
+# define option defaults
+f=false
+i=false
+n=false
+no_zeros=false
 
-# pass all arguments and option metadata to option parser
-opt_file=$temp_dir/options.conf
-~/.genetic-heatmaps/option-parser.py -f -i -n --nozeros -- $@ -- "$opt_file"
-source "$opt_file"
+# use GNU getopt to sort options
+set +e
+OPT_STRING=`getopt -o fin -l no-zeros -n "ERROR" -- "$@"`
+if [ $? -ne 0 ]; then
+    echo "$HELP_PROMPT"
+    exit 1
+fi
+eval set -- $OPT_STRING
+set -e
+
+# parse sorted options
+while [ $# -gt 0 ]; do
+    case "$1" in
+        -f)
+            f=true;;
+        -i)
+            i=true;;
+        -n)
+            n=true;;
+        --no-zeros)
+            no_zeros=true;;
+        --)
+            # end of options
+            shift
+            break;;
+    esac
+    shift
+done
 
 # determine overwrite option
 if $n; then
@@ -69,9 +96,8 @@ else
     include_zeros="TRUE"
 fi
 
-# remove option flags from the list of positional arguments
-# $1 refers to the gene data filepath and not the first option flag
-shift $((ARG_INDEX - 1))
+# regular expression to match numbers
+number_regex='^[+-]?[0-9]*([.][0-9]+)?$'
 
 # check that the number of arguments is valid
 if ! [[ $# -eq 5 || $# -eq 6 ]]; then
@@ -92,9 +118,6 @@ if ! [[ -f $1 ]]; then
 else
     gene_path=$1
 fi
-
-# regular expression to match numbers
-number_regex='^[+-]?[0-9]*([.][0-9]+)?$'
 
 # check that the lower bound is a number
 if ! [[ $2 =~ $number_regex ]]; then
@@ -142,8 +165,7 @@ if [[ -e $1 ]]; then
     case $ow_opt in
         f)
             # do not prompt user, overwrite file
-            transcription_path=$1
-            ;;
+            transcription_path=$1;;
         i)
             # prompt user
             echo "A file already exists at $1"
@@ -154,14 +176,12 @@ if [[ -e $1 ]]; then
             else
                 # overwrite file
                 transcription_path=$1
-            fi
-            ;;
+            fi;;
         n)
             # do not prompt user, do not overwrite, exit program with error
             echo "ERROR: A file already exists at $1" >&2
             echo "$HELP_PROMPT"
-            exit 1
-            ;;
+            exit 1;;
     esac
 else
     transcription_path=$1
@@ -173,8 +193,7 @@ if [[ -e $2 ]]; then
     case $ow_opt in
         f)
             # do not prompt user, overwrite file
-            binding_path=$2
-            ;;
+            binding_path=$2;;
         i)
             # prompt user
             echo "A file already exists at $2"
@@ -185,18 +204,19 @@ if [[ -e $2 ]]; then
             else
                 # overwrite file
                 binding_path=$2
-            fi
-            ;;
+            fi;;
         n)
             # do not prompt user, do not overwrite, exit program with error
             echo "ERROR: A file already exists at $2" >&2
             echo "$HELP_PROMPT"
-            exit 1
-            ;;
+            exit 1;;
     esac
 else
     binding_path=$2
 fi
+
+# create a temporary directory to hold temporary files
+temp_dir=$(mktemp -d --tmpdir "$(basename "$0").XXXXXXXXXX")
 
 # create a temporary sub-directory to store parsed data files
 mkdir $temp_dir/parsed_data

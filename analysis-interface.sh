@@ -45,14 +45,45 @@ set -e
 
 HELP_PROMPT="Type 'ghmtools help analysis' for usage notes."
 
-# create a temporary directory to hold temporary files
-temp_dir=$(mktemp -d --tmpdir "$(basename "$0").XXXXXXXXXX")
+# define option defaults
+f=false
+i=false
+n=false
+d=10
+window=10
 
-# pass all arguments and option metadata to option parser
-opt_file=$temp_dir/options.conf
-~/.genetic-heatmaps/option-parser.py -f -i -n -d VALUE --window VALUE -- $@ -- \
-    $opt_file
-source $opt_file
+# use GNU getopt to sort options
+set +e
+OPT_STRING=`getopt -o find: -l window: -n "ERROR" -- "$@"`
+if [ $? -ne 0 ]; then
+    echo "$HELP_PROMPT"
+    exit 1
+fi
+eval set -- $OPT_STRING
+set -e
+
+# parse sorted options
+while [ $# -gt 0 ]; do
+    case "$1" in
+        -f)
+            f=true;;
+        -i)
+            i=true;;
+        -n)
+            n=true;;
+        -d)
+            d="$2"
+            shift;;
+        --window)
+            window="$2"
+            shift;;
+        --)
+            # end of options
+            shift
+            break;;
+    esac
+    shift
+done
 
 # determine overwrite option
 if $n; then
@@ -70,9 +101,6 @@ positive_number_regex='^[+]?[0-9]*([.][0-9]+)?$'
 # regular expression to match non-negative integers
 nonnegative_integer_regex='^[+]?[0-9]+$'
 
-if [[ $d == "None" ]]; then
-    d=10
-fi
 # check that the binding distance is a positive number
 if ! [[ $d =~ $positive_number_regex ]]; then
     echo "ERROR: Binding distance is not a positive number ($d)" >&2
@@ -82,9 +110,6 @@ fi
 # convert the binding distance from kbp to bp, round to the nearest integer
 binding_dist=$(python3 -c "print(round(1000 * $d))")
 
-if [[ $window == "None" ]]; then
-    window=10
-fi
 # check that the window size is a positive integer
 if ! [[ $window =~ $nonnegative_integer_regex ]]; then
     echo "ERROR: Window size is not a non-negative integer ($window)" >&2
@@ -92,9 +117,12 @@ if ! [[ $window =~ $nonnegative_integer_regex ]]; then
     exit 1
 fi
 
-# remove option flags from the list of positional arguments
-# $1 refers to the transcription data filepath and not the first option flag
-shift $((ARG_INDEX - 1))
+# check that the number of arguments is valid
+if ! [[ $# -eq 4 ]]; then
+    echo "ERROR: Invalid number of arguments" >&2
+    echo "$HELP_PROMPT"
+    exit 1
+fi
 
 # check that the transcription data file is a valid file
 if ! [[ -f $1 ]]; then
@@ -125,17 +153,14 @@ fi
 # check that the genome is a supported genome
 case $3 in
     "hh19")
-        genome="hh19"
-        ;;
+        genome="hh19";;
     "mm9")
-        genome="mm9"
-        ;;
+        genome="mm9";;
     *)
         # exit program with error on invalid genome
         echo "ERROR: Invalid genome ($3)" >&2
         echo "$HELP_PROMPT"
-        exit 1
-        ;;
+        exit 1;;
 esac
 
 # check that the gene data file does not exist
@@ -144,8 +169,7 @@ if [[ -e $4 ]]; then
     case $ow_opt in
         f)
             # do not prompt user, overwrite file
-            gene_path=$4
-            ;;
+            gene_path=$4;;
         i)
             # prompt user
             echo "A file already exists at $4"
@@ -156,18 +180,19 @@ if [[ -e $4 ]]; then
             else
                 # overwrite file
                 gene_path=$4
-            fi
-            ;;
+            fi;;
         n)
             # do not prompt user, do not overwrite, exit program with error
             echo "ERROR: A file already exists at $4" >&2
             echo "$HELP_PROMPT"
-            exit 1
-            ;;
+            exit 1;;
     esac
 else
     gene_path=$4
 fi
+
+# create a temporary directory to hold temporary files
+temp_dir=$(mktemp -d --tmpdir "$(basename "$0").XXXXXXXXXX")
 
 # create a temporary sub-directory to store parsed data files
 mkdir $temp_dir/parsed_data
