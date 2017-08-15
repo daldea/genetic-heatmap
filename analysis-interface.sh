@@ -13,7 +13,7 @@
 # SYNOPSIS:
 #
 #     ghmtools analysis [-f | -i | -n] [-d <binding-distance>]
-#         [--window=<window-size>] <transcription-data> <binding-data> <genome>
+#         [--window <window-size>] <transcription-data> <binding-data> <genome>
 #         <gene-file>
 #
 # DESCRIPTION:
