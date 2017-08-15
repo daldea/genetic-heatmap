@@ -83,32 +83,31 @@ Typical procedure:
 ### Analysis
 
 ```
-ghmtools analysis [OPTIONS] TRANSCRIPTION_DATA BINDING_DATA GENOME GENE_FILE
+ghmtools analysis [-f | -i | -n] [-d <binding-distance>] [--window <window-size>] <transcription-data> <binding-data> <genome> <gene-file>
 ```
 
 #### Options
 
-|     Option       |                                            Description                                            |
-|       ---        |                                                ---                                                |
-| `-f`             | do not prompt before overwriting files                                                            |
-| `-i`             | prompt before overwriting files _(default)_                                                       |
-| `-n`             | do not overwrite files                                                                            |
-| `-d <NUMBER>`    | maximum distance (in kilobases) between a bound gene and the nearest binding site _(default: 10)_ |
-| `--window <INT>` | number of genes to be summed to calculate a binding score _(default: 10)_                         |
+|         Option           |                                            Description                                            |
+|           ---            |                                                ---                                                |
+| `-f`                     | do not prompt before overwriting files                                                            |
+| `-i`                     | prompt before overwriting files _(default)_                                                       |
+| `-n`                     | do not overwrite files                                                                            |
+| `-d <binding-distance>`  | maximum distance (in kilobases) between a bound gene and the nearest binding site _(default: 10)_ |
+| `--window <window-size>` | number of genes to be summed to calculate a binding score _(default: 10)_                         |
 
 If neither `-f`, `-i`, nor `-n` are given, the `-i` option is implied.  
-If conflicting options are given, the last option given takes effect.
 
 #### Arguments
 
-|      Argument        |                              Description                               |
-|         ---          |                                  ---                                   |
-| `TRANSCRIPTION_DATA` | filepath of the file containing gene transcription scores              |
-| `BINDING_DATA`       | filepath of the file containing ChIP-seq data or a list of bound genes |
-| `GENOME`             | reference genome used by BETA _(options: hg19, mm9)_                   |
-| `GENE_FILE`          | filepath where the gene activity file will be saved                    |
+|       Argument         |                              Description                               |
+|          ---           |                                  ---                                   |
+| `<transcription-data>` | filepath of the file containing gene transcription scores              |
+| `<binding-data>`       | filepath of the file containing ChIP-seq data or a list of bound genes |
+| `<genome>`             | reference genome used by BETA _(options: hg19, mm9)_                   |
+| `<gene-file>`          | filepath where the gene activity file will be saved                    |
 
-It is not necessary to specify whether `BINDING_DATA` is a ChIP-seq data file or a list of bound genes, since the analysis interface can determine this automatically.
+It is not necessary to specify whether `<binding-data>` is a ChIP-seq data file or a list of bound genes, since the analysis interface can determine this automatically.
 
 #### Example
 
@@ -124,33 +123,32 @@ ghmtools analysis foo1.csv foo2.svg mm9 bar.csv
 ### Heatmap
 
 ```
-ghmtools heatmap [OPTIONS] GENE_DATA TRANSCRIPTION_MIN TRANSCRIPTION_MAX [BINDING_MAX] TRANSCRIPTION_FILE BINDING_FILE
+ghmtools heatmap [-f | -i | -n] [--no-zeros] <gene-data> <transcription-min> <transcription-max> [<binding-max>] <transcription-file> <binding-file>
 ```
 
 #### Options
 
-|   Option    |                   Description                   |
-|     ---     |                       ---                       |
-| `-f`        | do not prompt before overwriting files          |
-| `-i`        | prompt before overwriting files _(default)_     |
-| `-n`        | do not overwrite files                          |
-| `--nozeros` | do not map genes with zero transcription values |
+|   Option     |                   Description                   |
+|     ---      |                       ---                       |
+| `-f`         | do not prompt before overwriting files          |
+| `-i`         | prompt before overwriting files _(default)_     |
+| `-n`         | do not overwrite files                          |
+| `--no-zeros` | do not map genes with zero transcription values |
 
 If neither `-f`, `-i`, nor `-n` are given, the `-i` option is implied.  
-If conflicting options are given, the last option given takes effect.
 
 #### Arguments
 
-|      Argument        |                                   Description                                    |
-|         ---          |                                       ---                                        |
-| `GENE_DATA`          | filepath of the file containing gene transcription and gene binding data         |
-| `TRANSCRIPTION_MIN`  | minimum value on the gene transcription scale                                    |
-| `TRANSCRIPTION_MAX`  | maximum value on the gene transcription scale                                    |
-| `BINDING_MAX`        | maximum value on the gene binding scale _(optional)_                             |
-| `TRANSCRIPTION_FILE` | filepath where the gene transcription heatmap will be saved                      |
-| `BINDING_FILE`       | filepath where the gene binding heatmap will be saved                            |
+|       Argument         |                                   Description                                    |
+|          ---           |                                       ---                                        |
+| `<gene-data>`          | filepath of the file containing gene transcription and gene binding data         |
+| `<transcription-min>`  | minimum value on the gene transcription scale                                    |
+| `<transcription-max>`  | maximum value on the gene transcription scale                                    |
+| `<binding-max>`        | maximum value on the gene binding scale _(optional)_                             |
+| `<transcription-file>` | filepath where the gene transcription heatmap will be saved                      |
+| `<binding-file>`       | filepath where the gene binding heatmap will be saved                            |
 
-If `BINDING_MAX` is not given or is set to `NONE`, the maximum value on the gene binding scale is set to the maximum gene binding value in the data.
+If `<binding-max>` is not given, the maximum value on the gene binding scale is set to the maximum gene binding value in the data.
 
 #### Example
 
@@ -170,16 +168,12 @@ ghmtools heatmap foo.csv -2.5 2.5 6 bar1.svg bar2.png
 ghmtools help <OPERATION>
 ```
 
-```
-ghmtools --help <OPERATION>
-```
-
 If no operation is given, `ghmtools help` displays a list of operations.
 
 ## Dependencies
 
 * BASH
-* Python 3
+  * GNU getopt
 * [BETA](http://cistrome.org/BETA/)
 * R
   * ggplot2
