@@ -10,33 +10,32 @@
 #
 # LICENSE  : MIT <https://opensource.org/licenses/MIT>
 #-------------------------------------------------------------------------------
-# USAGE:
+# SYNOPSIS:
 #
-#     ghmtools heatmap [OPTIONS] GENE_DATA TRANSCRIPTION_MIN TRANSCRIPTION_MAX
-#         [BINDING_MAX] TRANSCRIPTION_FILE BINDING_FILE
+#     ghmtools heatmap [-f | -i | -n ] [--no-zeros] <gene-data>
+#         <transcription-file> <transcription-max> [<binding-max>]
+#         <transcription-file> <binding-file>
 #
-# OPTIONS:
+# DESCRIPTION:
 #
-#     -f        : do not prompt before overwriting files
-#     -i        : prompt before overwriting files (default)
-#     -n        : do not overwrite files
-#     --nozeros : do not map genes with zero transcription values
-#
-# ARGUMENTS:
-#
-#     GENE_DATA          : filepath of the file containing gene transcription
-#                          and gene binding data
-#     TRANSCRIPTION_MIN  : minimum value on the gene transcription scale
-#     TRANSCRIPTION_MAX  : maximum value on the gene transcription scale
-#     BINDING_MAX        : maximum value on the gene binding scale (optional)
-#     TRANSCRIPTION_FILE : filepath where the gene transcription heatmap will be
-#                          saved
-#     BINDING_FILE       : filepath where the gene binding heatmap will be saved
+#     -f                   : do not prompt before overwriting files
+#     -i                   : prompt before overwriting files (default)
+#     -n                   : do not overwrite files
+#     --no-zeros           : do not map genes with zero transcription values
+#     <gene-data>          : filepath of the file containing gene transcription
+#                            and gene binding data
+#     <transcription-min>  : minimum value on the gene transcription scale
+#     <transcription-max>  : maximum value on the gene transcription scale
+#     <binding-max>        : maximum value on the gene binding scale (optional)
+#     <transcription-file> : filepath where the gene transcription heatmap will
+#                            be saved
+#     <binding-file>       : filepath where the gene binding heatmap will be
+#                            saved
 #
 # NOTES:
 #
-#     If BINDING_MAX is not given or is set to NONE, the maximum value on the
-#     gene binding scale is set to the maximum gene binding value in the data.
+#     If <binding-max> is not given, the maximum value on the gene binding scale
+#     is set to the maximum gene binding value in the data.
 #===============================================================================
 
 # exit program with error if any command returns an error
@@ -44,13 +43,40 @@ set -e
 
 HELP_PROMPT="Type 'ghmtools help heatmap' for usage notes."
 
-# create a temporary directory to hold temporary files
-temp_dir=$(mktemp -d --tmpdir "$(basename "$0").XXXXXXXXXX")
+# define option defaults
+f=false
+i=false
+n=false
+no_zeros=false
 
-# pass all arguments and option metadata to option parser
-opt_file=$temp_dir/options.conf
-~/.genetic-heatmaps/option-parser.py -f -i -n --nozeros -- $@ -- "$opt_file"
-source "$opt_file"
+# use GNU getopt to sort options
+set +e
+OPT_STRING=`getopt -o fin -l no-zeros -n "ERROR" -- "$@"`
+if [ $? -ne 0 ]; then
+    echo "$HELP_PROMPT"
+    exit 1
+fi
+eval set -- $OPT_STRING
+set -e
+
+# parse sorted options
+while [ $# -gt 0 ]; do
+    case "$1" in
+        -f)
+            f=true;;
+        -i)
+            i=true;;
+        -n)
+            n=true;;
+        --no-zeros)
+            no_zeros=true;;
+        --)
+            # end of options
+            shift
+            break;;
+    esac
+    shift
+done
 
 # determine overwrite option
 if $n; then
@@ -70,9 +96,8 @@ else
     include_zeros="TRUE"
 fi
 
-# remove option flags from the list of positional arguments
-# $1 refers to the gene data filepath and not the first option flag
-shift $((ARG_INDEX - 1))
+# regular expression to match numbers
+number_regex='^[+-]?[0-9]*([.][0-9]+)?$'
 
 # check that the number of arguments is valid
 if ! [[ $# -eq 5 || $# -eq 6 ]]; then
@@ -93,9 +118,6 @@ if ! [[ -f $1 ]]; then
 else
     gene_path=$1
 fi
-
-# regular expression to match numbers
-number_regex='^[+-]?[0-9]*([.][0-9]+)?$'
 
 # check that the lower bound is a number
 if ! [[ $2 =~ $number_regex ]]; then
@@ -143,8 +165,7 @@ if [[ -e $1 ]]; then
     case $ow_opt in
         f)
             # do not prompt user, overwrite file
-            transcription_path=$1
-            ;;
+            transcription_path=$1;;
         i)
             # prompt user
             echo "A file already exists at $1"
@@ -155,14 +176,12 @@ if [[ -e $1 ]]; then
             else
                 # overwrite file
                 transcription_path=$1
-            fi
-            ;;
+            fi;;
         n)
             # do not prompt user, do not overwrite, exit program with error
             echo "ERROR: A file already exists at $1" >&2
             echo "$HELP_PROMPT"
-            exit 1
-            ;;
+            exit 1;;
     esac
 else
     transcription_path=$1
@@ -174,8 +193,7 @@ if [[ -e $2 ]]; then
     case $ow_opt in
         f)
             # do not prompt user, overwrite file
-            binding_path=$2
-            ;;
+            binding_path=$2;;
         i)
             # prompt user
             echo "A file already exists at $2"
@@ -186,18 +204,19 @@ if [[ -e $2 ]]; then
             else
                 # overwrite file
                 binding_path=$2
-            fi
-            ;;
+            fi;;
         n)
             # do not prompt user, do not overwrite, exit program with error
             echo "ERROR: A file already exists at $2" >&2
             echo "$HELP_PROMPT"
-            exit 1
-            ;;
+            exit 1;;
     esac
 else
     binding_path=$2
 fi
+
+# create a temporary directory to hold temporary files
+temp_dir=$(mktemp -d --tmpdir "$(basename "$0").XXXXXXXXXX")
 
 # create a temporary sub-directory to store parsed data files
 mkdir $temp_dir/parsed_data

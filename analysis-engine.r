@@ -12,14 +12,14 @@
 #-------------------------------------------------------------------------------
 # USAGE:
 #
-#     ./analysis-engine.r RNA_PATH BETA_PATH WINDOW_SIZE OUTPUT_PATH
+#     ./analysis-engine.r <rna-path> <beta-path> <window-size> <output-path>
 #
-# ARGUMENTS:
+# DESCRIPTION:
 #
-#     RNA_PATH      : filepath of the file containing RNA-seq data
-#     BETA_PATH     : filepath of the file containing BETA data
-#     WINDOW_SIZE   : number of genes to be summed to calculate a binding score
-#     OUTPUT_PATH   : filepath where the gene activity TSV file will be saved
+#     <rna-path>      : filepath of the file containing RNA-seq data
+#     <beta-path>     : filepath of the file containing BETA data
+#     <window-size>   : number of genes used to calculate a binding score
+#     <output-path>   : filepath where the gene activity TSV file will be saved
 #===============================================================================
 
 # store command line arguments into a list with given names and convert numeric

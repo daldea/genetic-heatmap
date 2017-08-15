@@ -6,20 +6,18 @@
 #            and passes the following arguments to that interface
 #
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
-# DATE     : 2017-07-13
+# DATE     : 2017-08-14
 #
 # LICENSE  : MIT <https://opensource.org/licenses/MIT>
 #-------------------------------------------------------------------------------
-# USAGE:
+# SYNOPSIS:
 #
-#     ghmtools OPERATION [OPTIONS] ARGUMENTS :
-#         execute a given operation with given options and arguments
-#
-#     ghmtools help :
-#         display a list of operations
-#
-#     ghmtools help OPERATION :
-#         display the help message for a particular operation
+#     ghmtools <operation> [<option>...] <argument>... : execute an operation
+#     ghmtools help                                    : display a list of
+#                                                        operations
+#     ghmtools help <operation>                        : display the help
+#                                                        message for an
+#                                                        operation
 #
 # OPERATIONS:
 #
@@ -27,10 +25,6 @@
 #                files
 #     heatmap  : create gene transcription and gene binding heatmaps from gene
 #                activity TSV files
-#-------------------------------------------------------------------------------
-# ALIAS PROGRESSION:
-#     1. ~/.genetic-heatmaps/terminal-interface.sh OPERATION [OPTIONS] ARGUMENTS
-#     2. ~/.genetic-heatmaps/OPERATION-interface.sh [OPTIONS] ARGUMENTS
 #===============================================================================
 
 # exit program with error if any command returns an error
