@@ -31,7 +31,8 @@
 #                              transcription data
 #     <binding-data>         : filepath of the file containing ChIP-seq data or
 #                              a list of bound genes
-#     <genome>               : genome used by BETA (options: hg19, mm9)
+#     <genome>               : genome used by BETA
+#                              (options: hg19, hg38, mm9, mm10)
 #     <gene-file>            : filepath where the gene activity file will be
 #                              saved
 #
@@ -168,17 +169,15 @@ else
     binding_path="$2"
 fi
 
-# check that the genome is a supported genome
-case $3 in
-    "hh19")
-        genome="hh19";;
-    "mm9")
-        genome="mm9";;
-    *)
-        # exit program with error on invalid genome
-        echo "ERROR: Invalid genome ($3)" >&2
-        echo "$HELP_PROMPT"
-        exit 1;;
+# check that the genome is a supported genome (i.e. has an associated blacklist)
+blacklist=~/.genetic-heatmaps/$3.bed
+if [[ $blacklist ]]; then
+    genome=$3
+else
+    # exit program with error on invalid genome
+    echo "ERROR: Invalid genome ($3)" >&2
+    echo "$HELP_PROMPT"
+    exit 1
 esac
 
 # check that the gene data file does not exist
@@ -187,17 +186,17 @@ if [[ -e $4 ]]; then
     case $ow_opt in
         f)
             # do not prompt user, overwrite file
-            gene_path=$4;;
+            gene_path="$4";;
         i)
             # prompt user
-            echo "A file already exists at $4"
+            echo "WARNING: A file already exists at $4"
             read -p "Type y to overwrite that file, type n to exit: " yn
             if ! [[ $yn == "y" || $yn == "Y" ]]; then
                 # do not overwrite file, exit program
                 exit
             else
                 # overwrite file
-                gene_path=$4
+                gene_path="$4"
             fi;;
         n)
             # do not prompt user, do not overwrite, exit program with error
@@ -206,7 +205,7 @@ if [[ -e $4 ]]; then
             exit 1;;
     esac
 else
-    gene_path=$4
+    gene_path="$4"
 fi
 
 # create a temporary directory to hold temporary files
@@ -230,15 +229,13 @@ sed -i "s/ /\t/g" "$temp_binding"
 # determine if binding data is a ChIP-seq data file or a bound gene list file
 if grep -Pq "\t" "$temp_binding"; then
     if $use_blacklist; then
-        # locate genome-specific blacklist
-        blacklist=~/.genetic-heatmaps/blacklists/${genome}.bed
         # remove all blacklisted binding sites
         bedtools subtract -A -a "$temp_binding" -b "$blacklist" \
             > "$temp_binding"
     fi
     # run the BETA genomic analysis program to generate bound gene list file
     BETA minus -p "$temp_binding" -g $genome -d $binding_dist \
-        -o "$temp_dir/BETA_output" --bl >/dev/null
+        -o "$temp_dir/BETA_output" --bl > /dev/null
     # remove comments from BETA output file
     sed '/^#/d' < "$temp_dir/BETA_output/NA_targets.txt" > "$temp_binding"
 fi
