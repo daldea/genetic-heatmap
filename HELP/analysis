@@ -41,8 +41,8 @@ ARGUMENTS:
 
 NOTES:
 
-    The analysis operation will automatically remove common false positive
-    binding sites from the ChIP-seq data. The ENCODE blacklists
+    The analysis operation automatically removes common false positive binding
+    sites from the ChIP-seq data. The ENCODE blacklists
     <https://sites.google.com/site/anshulkundaje/projects/blacklists> are used
     to identify false positive binding sites. The --no-blacklist option prevents
     the removal of these blacklisted binding sites.
