@@ -49,6 +49,8 @@ i=false
 n=false
 no_zeros=false
 
+# TODO: write code to ignore negative integers
+
 # use GNU getopt to sort options
 set +e
 OPT_STRING=`getopt -o fin -l no-zeros -n "ERROR" -- "$@"`

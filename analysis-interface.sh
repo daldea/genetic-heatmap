@@ -62,6 +62,8 @@ d=10
 no_blacklist=false
 window=10
 
+# TODO: write code to ignore negative integers
+
 # use GNU getopt to sort options
 set +e
 OPT_STRING=`getopt -o find: -l no-blacklist,window: -n "ERROR" -- "$@"`
@@ -170,7 +172,7 @@ else
 fi
 
 # check that the genome is a supported genome (i.e. has an associated blacklist)
-blacklist=~/.genetic-heatmaps/$3.bed
+blacklist=~/.genetic-heatmaps/blacklists/$3.bed
 if [[ $blacklist ]]; then
     genome=$3
 else
@@ -178,7 +180,7 @@ else
     echo "ERROR: Invalid genome ($3)" >&2
     echo "$HELP_PROMPT"
     exit 1
-esac
+fi
 
 # check that the gene data file does not exist
 if [[ -e $4 ]]; then
