@@ -83,7 +83,7 @@ Typical procedure:
 ### Analysis
 
 ```
-ghmtools analysis [-f | -i | -n] [-d <binding-distance>] [--window <window-size>] <transcription-data> <binding-data> <genome> <gene-file>
+ghmtools analysis [-f | -i | -n] [-d <binding-distance>] [--no-blacklist] [--window <window-size>] <transcription-data> <binding-data> <genome> <gene-file>
 ```
 
 #### Options
@@ -94,9 +94,10 @@ ghmtools analysis [-f | -i | -n] [-d <binding-distance>] [--window <window-size>
 | `-i`                     | prompt before overwriting files _(default)_                                                       |
 | `-n`                     | do not overwrite files                                                                            |
 | `-d <binding-distance>`  | maximum distance (in kilobases) between a bound gene and the nearest binding site _(default: 10)_ |
+| `--no-blacklist`         | do not remove common false positive binding sites from the ChIP-seq data                          |
 | `--window <window-size>` | number of genes to be summed to calculate a binding score _(default: 10)_                         |
 
-If neither `-f`, `-i`, nor `-n` are given, the `-i` option is implied.  
+If neither `-f`, `-i`, nor `-n` are given, the `-i` option is implied.
 
 #### Arguments
 
@@ -107,6 +108,7 @@ If neither `-f`, `-i`, nor `-n` are given, the `-i` option is implied.
 | `<genome>`             | reference genome used by BETA _(options: hg19, mm9)_                   |
 | `<gene-file>`          | filepath where the gene activity file will be saved                    |
 
+The analysis operation will automatically remove common false positive binding sites from the ChIP-seq data. The [ENCODE blacklists](https://sites.google.com/site/anshulkundaje/projects/blacklists) are used to identify false positive binding sites. The `--no-blacklist` option prevents the removal of these blacklisted binding sites.  
 It is not necessary to specify whether `<binding-data>` is a ChIP-seq data file or a list of bound genes, since the analysis interface can determine this automatically.
 
 #### Example
@@ -135,7 +137,7 @@ ghmtools heatmap [-f | -i | -n] [--no-zeros] <gene-data> <transcription-min> <tr
 | `-n`         | do not overwrite files                          |
 | `--no-zeros` | do not map genes with zero transcription values |
 
-If neither `-f`, `-i`, nor `-n` are given, the `-i` option is implied.  
+If neither `-f`, `-i`, nor `-n` are given, the `-i` option is implied.
 
 #### Arguments
 
@@ -174,6 +176,7 @@ If no operation is given, `ghmtools help` displays a list of operations.
 
 * BASH
   * GNU getopt
+* [Bedtools](http://bedtools.readthedocs.io/en/latest/)
 * [BETA](http://cistrome.org/BETA/)
 * R
   * ggplot2
