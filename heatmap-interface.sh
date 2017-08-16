@@ -116,7 +116,7 @@ if ! [[ -f $1 ]]; then
     echo "$HELP_PROMPT"
     exit 1
 else
-    gene_path=$1
+    gene_path="$1"
 fi
 
 # check that the lower bound is a number
@@ -165,17 +165,17 @@ if [[ -e $1 ]]; then
     case $ow_opt in
         f)
             # do not prompt user, overwrite file
-            transcription_path=$1;;
+            transcription_path="$1";;
         i)
             # prompt user
-            echo "A file already exists at $1"
+            echo "WARNING: A file already exists at $1"
             read -p "Type y to overwrite that file, type n to exit: " yn
             if ! [[ $yn == "y" || $yn == "Y" ]]; then
                 # do not overwrite file, exit program
                 exit
             else
                 # overwrite file
-                transcription_path=$1
+                transcription_path="$1"
             fi;;
         n)
             # do not prompt user, do not overwrite, exit program with error
@@ -193,7 +193,7 @@ if [[ -e $2 ]]; then
     case $ow_opt in
         f)
             # do not prompt user, overwrite file
-            binding_path=$2;;
+            binding_path="$2";;
         i)
             # prompt user
             echo "A file already exists at $2"
@@ -203,7 +203,7 @@ if [[ -e $2 ]]; then
                 exit
             else
                 # overwrite file
-                binding_path=$2
+                binding_path="$2"
             fi;;
         n)
             # do not prompt user, do not overwrite, exit program with error
@@ -212,7 +212,7 @@ if [[ -e $2 ]]; then
             exit 1;;
     esac
 else
-    binding_path=$2
+    binding_path="$2"
 fi
 
 # create a temporary directory to hold temporary files
