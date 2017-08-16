@@ -58,11 +58,12 @@ f=false
 i=false
 n=false
 d=10
+no_blacklist=false
 window=10
 
 # use GNU getopt to sort options
 set +e
-OPT_STRING=`getopt -o find: -l window: -n "ERROR" -- "$@"`
+OPT_STRING=`getopt -o find: -l no-blacklist,window: -n "ERROR" -- "$@"`
 if [ $? -ne 0 ]; then
     echo "$HELP_PROMPT"
     exit 1
@@ -82,6 +83,8 @@ while [ $# -gt 0 ]; do
         -d)
             d="$2"
             shift;;
+        --no-blacklist)
+            no_blacklist=true;;
         --window)
             window="$2"
             shift;;
@@ -102,6 +105,13 @@ elif $f; then
     ow_opt="f"
 else
     ow_opt="i"
+fi
+
+# determine blacklist option
+if $no_blacklist; then
+    blacklist=false
+else
+    blacklist=true
 fi
 
 # regular expression to match positive numbers
