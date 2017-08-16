@@ -12,7 +12,7 @@
 #-------------------------------------------------------------------------------
 # SYNOPSIS:
 #
-#     ghmtools analysis [-f | -i | -n] [-d <binding-distance>]
+#     ghmtools analysis [-f | -i | -n] [-d <binding-distance>] [--no-blacklist]
 #         [--window <window-size>] <transcription-data> <binding-data> <genome>
 #         <gene-file>
 #
@@ -23,6 +23,8 @@
 #     -n                     : do not overwrite files
 #     -d <binding-distance>  : maximum distance (in kilobases) between a bound
 #                              gene and the nearest binding site (default: 10)
+#     --no-blacklist         : do not remove common false positive binding sites
+#                              from the ChIP-seq data
 #     --window=<window-size> : number of genes to be summed to calculate a
 #                              binding score (default: 10)
 #     <transcription-data>   : filepath of the file containing gene
@@ -34,6 +36,12 @@
 #                              saved
 #
 # NOTES:
+#
+#     The analysis operation will automatically remove common false positive
+#     binding sites from the ChIP-seq data. The ENCODE blacklists
+#     <https://sites.google.com/site/anshulkundaje/projects/blacklists> are used
+#     to identify false positive binding sites. The --no-blacklist option
+#     prevents the removal of these blacklisted binding sites.
 #
 #     It is not necessary to specify whether <binding-data> is a ChIP-seq data
 #     file or a list of bound genes, since the analysis interface can determine
