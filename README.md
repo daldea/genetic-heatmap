@@ -105,7 +105,7 @@ If neither `-f`, `-i`, nor `-n` are given, the `-i` option is implied.
 |          ---           |                                  ---                                   |
 | `<transcription-data>` | filepath of the file containing gene transcription scores              |
 | `<binding-data>`       | filepath of the file containing ChIP-seq data or a list of bound genes |
-| `<genome>`             | reference genome used by BETA _(options: hg19, mm9)_                   |
+| `<genome>`             | reference genome used by BETA _(options: hg19, hg38, mm9, mm10)_       |
 | `<gene-file>`          | filepath where the gene activity file will be saved                    |
 
 The analysis operation automatically removes common false positive binding sites from the ChIP-seq data. The [ENCODE blacklists](https://sites.google.com/site/anshulkundaje/projects/blacklists) are used to identify false positive binding sites. The `--no-blacklist` option prevents the removal of these blacklisted binding sites.  

@@ -34,7 +34,7 @@ ARGUMENTS:
         filepath of the file containing ChIP-seq data or a list of bound genes
 
     <genome>
-        reference genome used by BETA (options: hg19, mm9)
+        reference genome used by BETA (options: hg19, hg38, mm9, mm10)
 
     <gene-file>
         filepath where the gene activity file will be saved
