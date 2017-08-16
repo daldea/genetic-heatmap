@@ -37,8 +37,8 @@
 #
 # NOTES:
 #
-#     The analysis operation will automatically remove common false positive
-#     binding sites from the ChIP-seq data. The ENCODE blacklists
+#     The analysis operation automatically removes common false positive binding
+#     sites from the ChIP-seq data. The ENCODE blacklists
 #     <https://sites.google.com/site/anshulkundaje/projects/blacklists> are used
 #     to identify false positive binding sites. The --no-blacklist option
 #     prevents the removal of these blacklisted binding sites.
@@ -107,11 +107,11 @@ else
     ow_opt="i"
 fi
 
-# determine blacklist option
+# determine use blacklist option
 if $no_blacklist; then
-    blacklist=false
+    use_blacklist=false
 else
-    blacklist=true
+    use_blacklist=true
 fi
 
 # regular expression to match positive numbers
@@ -229,6 +229,13 @@ sed -i "s/ /\t/g" "$temp_binding"
 
 # determine if binding data is a ChIP-seq data file or a bound gene list file
 if grep -Pq "\t" "$temp_binding"; then
+    if $use_blacklist; then
+        # locate genome-specific blacklist
+        blacklist=~/.genetic-heatmaps/blacklists/${genome}.bed
+        # remove all blacklisted binding sites
+        bedtools subtract -A -a "$temp_binding" -b "$blacklist" \
+            > "$temp_binding"
+    fi
     # run the BETA genomic analysis program to generate bound gene list file
     BETA minus -p "$temp_binding" -g $genome -d $binding_dist \
         -o "$temp_dir/BETA_output" --bl >/dev/null
