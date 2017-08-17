@@ -41,7 +41,7 @@
 # exit program with error if any command returns an error
 set -e
 
-HELP_PROMPT="Type 'ghmtools help heatmap' for usage notes."
+HELP_PROMPT="Type 'ghmtools help heatmap' for usage notes"
 
 # define option defaults
 f=false
@@ -49,13 +49,12 @@ i=false
 n=false
 no_zeros=false
 
-# TODO: write code to ignore negative integers
-
 # use GNU getopt to sort options
 set +e
-OPT_STRING=`getopt -o fin -l no-zeros -n "ERROR" -- "$@"`
-if [ $? -ne 0 ]; then
+OPT_STRING=`getopt -o +fin -l no-zeros -n "ERROR" -- "$@"`
+if [[ $? -ne 0 ]]; then
     echo "$HELP_PROMPT"
+    echo "Try separating options from arguments with --"
     exit 1
 fi
 eval set -- $OPT_STRING

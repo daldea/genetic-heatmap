@@ -52,7 +52,7 @@
 # exit program with error if any command returns an error
 set -e
 
-HELP_PROMPT="Type 'ghmtools help analysis' for usage notes."
+HELP_PROMPT="Type 'ghmtools help analysis' for usage notes"
 
 # define option defaults
 f=false
@@ -62,20 +62,19 @@ d=10
 no_blacklist=false
 window=10
 
-# TODO: write code to ignore negative integers
-
 # use GNU getopt to sort options
 set +e
-OPT_STRING=`getopt -o find: -l no-blacklist,window: -n "ERROR" -- "$@"`
-if [ $? -ne 0 ]; then
+OPT_STRING=`getopt -o +find: -l no-blacklist,window: -n "ERROR" -- "$@"`
+if [[ $? -ne 0 ]]; then
     echo "$HELP_PROMPT"
+    echo "Try separating options from arguments with --"
     exit 1
 fi
 eval set -- $OPT_STRING
 set -e
 
 # parse sorted options
-while [ $# -gt 0 ]; do
+while [[ $# -gt 0 ]]; do
     case "$1" in
         -f)
             f=true;;
