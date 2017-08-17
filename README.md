@@ -56,7 +56,7 @@ The installer only installs Genetic Heatmap Tools for the user running the scrip
    ```
    cd ~/.genetic-heatmaps
    chmod 644 *
-   chmod 755 src/* installer.sh
+   chmod 755 src/* INSTALL.sh
    ```
 
 5. Make a symbolic link to the terminal interface in the `~/bin` directory.
