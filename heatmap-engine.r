@@ -6,7 +6,7 @@
 #            heatmaps from combined gene activity TSV files
 #
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
-# DATE     : 2017-07-10
+# DATE     : 2017-07-26
 #
 # LICENSE  : MIT <https://opensource.org/licenses/MIT>
 #-------------------------------------------------------------------------------

@@ -6,15 +6,15 @@
 #            them to BETA and the analysis engine
 #
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
-# DATE     : 2017-07-12
+# DATE     : 2017-08-17
 #
 # LICENSE  : MIT <https://opensource.org/licenses/MIT>
 #-------------------------------------------------------------------------------
 # SYNOPSIS:
 #
-#     ghmtools analysis [-f | -i | -n] [-d <binding-distance>]
-#         [--window <window-size>] <transcription-data> <binding-data> <genome>
-#         <gene-file>
+#     ghmtools analysis [-f | -i | -n] [-d <binding-distance>] [--no-blacklist]
+#         [--window <window-size>] [--] <transcription-data> <binding-data>
+#         <genome> <gene-file>
 #
 # DESCRIPTION:
 #
@@ -23,17 +23,26 @@
 #     -n                     : do not overwrite files
 #     -d <binding-distance>  : maximum distance (in kilobases) between a bound
 #                              gene and the nearest binding site (default: 10)
+#     --no-blacklist         : do not remove common false positive binding sites
+#                              from the ChIP-seq data
 #     --window=<window-size> : number of genes to be summed to calculate a
 #                              binding score (default: 10)
 #     <transcription-data>   : filepath of the file containing gene
 #                              transcription data
 #     <binding-data>         : filepath of the file containing ChIP-seq data or
 #                              a list of bound genes
-#     <genome>               : genome used by BETA (options: hg19, mm9)
+#     <genome>               : genome used by BETA
+#                              (options: hg19, hg38, mm9, mm10)
 #     <gene-file>            : filepath where the gene activity file will be
 #                              saved
 #
 # NOTES:
+#
+#     The analysis operation automatically removes common false positive binding
+#     sites from the ChIP-seq data. The ENCODE blacklists
+#     <https://sites.google.com/site/anshulkundaje/projects/blacklists> are used
+#     to identify false positive binding sites. The --no-blacklist option
+#     prevents the removal of these blacklisted binding sites.
 #
 #     It is not necessary to specify whether <binding-data> is a ChIP-seq data
 #     file or a list of bound genes, since the analysis interface can determine
@@ -43,27 +52,29 @@
 # exit program with error if any command returns an error
 set -e
 
-HELP_PROMPT="Type 'ghmtools help analysis' for usage notes."
+HELP_PROMPT="Type 'ghmtools help analysis' for usage notes"
 
 # define option defaults
 f=false
 i=false
 n=false
 d=10
+no_blacklist=false
 window=10
 
 # use GNU getopt to sort options
 set +e
-OPT_STRING=`getopt -o find: -l window: -n "ERROR" -- "$@"`
-if [ $? -ne 0 ]; then
+OPT_STRING=`getopt -o +find: -l no-blacklist,window: -n "ERROR" -- "$@"`
+if [[ $? -ne 0 ]]; then
     echo "$HELP_PROMPT"
+    echo "Try separating options from arguments with --"
     exit 1
 fi
 eval set -- $OPT_STRING
 set -e
 
 # parse sorted options
-while [ $# -gt 0 ]; do
+while [[ $# -gt 0 ]]; do
     case "$1" in
         -f)
             f=true;;
@@ -74,6 +85,8 @@ while [ $# -gt 0 ]; do
         -d)
             d="$2"
             shift;;
+        --no-blacklist)
+            no_blacklist=true;;
         --window)
             window="$2"
             shift;;
@@ -94,6 +107,13 @@ elif $f; then
     ow_opt="f"
 else
     ow_opt="i"
+fi
+
+# determine use blacklist option
+if $no_blacklist; then
+    use_blacklist=false
+else
+    use_blacklist=true
 fi
 
 # regular expression to match positive numbers
@@ -150,18 +170,16 @@ else
     binding_path="$2"
 fi
 
-# check that the genome is a supported genome
-case $3 in
-    "hh19")
-        genome="hh19";;
-    "mm9")
-        genome="mm9";;
-    *)
-        # exit program with error on invalid genome
-        echo "ERROR: Invalid genome ($3)" >&2
-        echo "$HELP_PROMPT"
-        exit 1;;
-esac
+# check that the genome is a supported genome (i.e. has an associated blacklist)
+blacklist=~/.genetic-heatmaps/blacklists/$3.bed
+if [[ $blacklist ]]; then
+    genome=$3
+else
+    # exit program with error on invalid genome
+    echo "ERROR: Invalid genome ($3)" >&2
+    echo "$HELP_PROMPT"
+    exit 1
+fi
 
 # check that the gene data file does not exist
 if [[ -e $4 ]]; then
@@ -169,17 +187,17 @@ if [[ -e $4 ]]; then
     case $ow_opt in
         f)
             # do not prompt user, overwrite file
-            gene_path=$4;;
+            gene_path="$4";;
         i)
             # prompt user
-            echo "A file already exists at $4"
+            echo "WARNING: A file already exists at $4"
             read -p "Type y to overwrite that file, type n to exit: " yn
             if ! [[ $yn == "y" || $yn == "Y" ]]; then
                 # do not overwrite file, exit program
                 exit
             else
                 # overwrite file
-                gene_path=$4
+                gene_path="$4"
             fi;;
         n)
             # do not prompt user, do not overwrite, exit program with error
@@ -188,7 +206,7 @@ if [[ -e $4 ]]; then
             exit 1;;
     esac
 else
-    gene_path=$4
+    gene_path="$4"
 fi
 
 # create a temporary directory to hold temporary files
@@ -211,9 +229,14 @@ sed -i "s/ /\t/g" "$temp_binding"
 
 # determine if binding data is a ChIP-seq data file or a bound gene list file
 if grep -Pq "\t" "$temp_binding"; then
+    if $use_blacklist; then
+        # remove all blacklisted binding sites
+        bedtools subtract -A -a "$temp_binding" -b "$blacklist" \
+            > "$temp_binding"
+    fi
     # run the BETA genomic analysis program to generate bound gene list file
     BETA minus -p "$temp_binding" -g $genome -d $binding_dist \
-        -o "$temp_dir/BETA_output" --bl >/dev/null
+        -o "$temp_dir/BETA_output" --bl > /dev/null
     # remove comments from BETA output file
     sed '/^#/d' < "$temp_dir/BETA_output/NA_targets.txt" > "$temp_binding"
 fi
