@@ -5,7 +5,7 @@
 # ABSTRACT : A BASH script that installs Genetic Heatmap Tools for a single user
 #
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
-# DATE     : 2017-08-14
+# DATE     : 2017-08-17
 #
 # LICENSE  : MIT <https://opensource.org/licenses/MIT>
 #==============================================================================+
@@ -23,8 +23,8 @@ mv -T genetic-heatmaps-master ~/.genetic-heatmaps
 
 # Mark the code files as executable.
 cd ~/.genetic-heatmaps
-chmod 755 *
-chmod 644 README.md LICENSE HELP/*
+chmod 644 *
+chmod 755 src/* installer.sh
 
 # Make a symbolic link to the terminal interface in the `~/bin` directory.
-ln -s ~/.genetic-heatmaps/terminal-interface.sh ~/bin/ghmtools
+ln -s ~/.genetic-heatmaps/src/terminal-interface.sh ~/bin/ghmtools

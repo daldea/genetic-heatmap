@@ -47,7 +47,7 @@ if [[ $operation == "--help" ]]; then
 fi
 
 # parse operation interface
-interface=~/.genetic-heatmaps/${operation}-interface.sh
+interface=~/.genetic-heatmaps/src/${operation}-interface.sh
 
 # ensure operation interface exists
 # prevent recursive references

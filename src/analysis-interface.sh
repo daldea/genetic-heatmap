@@ -242,5 +242,5 @@ if grep -Pq "\t" "$temp_binding"; then
 fi
 
 # pass validated arguments to the analysis engine
-~/.genetic-heatmaps/analysis-engine.r "$temp_transcription" "$temp_binding" \
-    $window "$gene_path"
+~/.genetic-heatmaps/src/analysis-engine.r "$temp_transcription" \
+    "$temp_binding" $window "$gene_path"

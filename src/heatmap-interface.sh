@@ -227,6 +227,6 @@ temp_gene=$temp_dir/parsed_data/gene_data
 sed '/^#/ d' < "$gene_path" > "$temp_gene"
 
 # pass validated arguments to the heatmap engine
-~/.genetic-heatmaps/heatmap-engine.r "$temp_gene" $include_zeros \
+~/.genetic-heatmaps/src/heatmap-engine.r "$temp_gene" $include_zeros \
     $transcription_min $transcription_max $binding_max "$transcription_path" \
     "$binding_path"
