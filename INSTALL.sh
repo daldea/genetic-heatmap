@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #===============================================================================
-# TITLE    : installer.sh
+# TITLE    : INSTALL.sh
 # ABSTRACT : A BASH script that installs Genetic Heatmap Tools for a single user
 #
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
@@ -24,7 +24,7 @@ mv -T genetic-heatmaps-master ~/.genetic-heatmaps
 # Mark the code files as executable.
 cd ~/.genetic-heatmaps
 chmod 644 *
-chmod 755 src/* installer.sh
+chmod 755 src/* INSTALL.sh
 
 # Make a symbolic link to the terminal interface in the `~/bin` directory.
 ln -s ~/.genetic-heatmaps/src/terminal-interface.sh ~/bin/ghmtools
