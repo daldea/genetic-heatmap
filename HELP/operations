@@ -1,6 +1,6 @@
 SYNOPSIS:
 
-    ghmtools <operation> [<option>...] <argument>...
+    ghmtools <operation> [<option>...] [--] <argument>...
         execute a given operation with given options and arguments
 
     ghmtools help

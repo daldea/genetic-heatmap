@@ -83,7 +83,7 @@ Typical procedure:
 ### Analysis
 
 ```
-ghmtools analysis [-f | -i | -n] [-d <binding-distance>] [--no-blacklist] [--window <window-size>] <transcription-data> <binding-data> <genome> <gene-file>
+ghmtools analysis [-f | -i | -n] [-d <binding-distance>] [--no-blacklist] [--window <window-size>] [--] <transcription-data> <binding-data> <genome> <gene-file>
 ```
 
 #### Options
@@ -125,7 +125,7 @@ ghmtools analysis foo1.csv foo2.svg mm9 bar.csv
 ### Heatmap
 
 ```
-ghmtools heatmap [-f | -i | -n] [--no-zeros] <gene-data> <transcription-min> <transcription-max> [<binding-max>] <transcription-file> <binding-file>
+ghmtools heatmap [-f | -i | -n] [--no-zeros] [--] <gene-data> <transcription-min> <transcription-max> [<binding-max>] <transcription-file> <binding-file>
 ```
 
 #### Options

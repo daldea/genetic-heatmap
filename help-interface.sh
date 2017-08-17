@@ -18,7 +18,7 @@
 # exit program with error if any command returns an error
 set -e
 
-HELP_PROMPT="Type 'ghmtools help' for usage notes."
+HELP_PROMPT="Type 'ghmtools help' for usage notes"
 
 # check that only 0 or 1 arguments were passed
 if ! [[ $# -le 1 ]]; then

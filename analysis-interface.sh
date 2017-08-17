@@ -6,15 +6,15 @@
 #            them to BETA and the analysis engine
 #
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
-# DATE     : 2017-07-12
+# DATE     : 2017-08-17
 #
 # LICENSE  : MIT <https://opensource.org/licenses/MIT>
 #-------------------------------------------------------------------------------
 # SYNOPSIS:
 #
 #     ghmtools analysis [-f | -i | -n] [-d <binding-distance>] [--no-blacklist]
-#         [--window <window-size>] <transcription-data> <binding-data> <genome>
-#         <gene-file>
+#         [--window <window-size>] [--] <transcription-data> <binding-data>
+#         <genome> <gene-file>
 #
 # DESCRIPTION:
 #

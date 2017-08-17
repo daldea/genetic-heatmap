@@ -1,7 +1,8 @@
 USAGE:
 
-    ghmtools heatmap [-f | -i | -n] [--no-zeros] <gene-data> <transcription-min>
-        <transcription-max> [<binding-max>] <transcription-file> <binding-file>
+    ghmtools heatmap [-f | -i | -n] [--no-zeros] [--] <gene-data>
+        <transcription-min> <transcription-max> [<binding-max>]
+        <transcription-file> <binding-file>
 
 OPTIONS:
 

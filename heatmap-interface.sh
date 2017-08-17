@@ -6,13 +6,13 @@
 #            them to the heatmap engine
 #
 # AUTHOR   : Dennis Aldea <dennis.aldea@gmail.com>
-# DATE     : 2017-07-12
+# DATE     : 2017-08-17
 #
 # LICENSE  : MIT <https://opensource.org/licenses/MIT>
 #-------------------------------------------------------------------------------
 # SYNOPSIS:
 #
-#     ghmtools heatmap [-f | -i | -n ] [--no-zeros] <gene-data>
+#     ghmtools heatmap [-f | -i | -n ] [--no-zeros] [--] <gene-data>
 #         <transcription-file> <transcription-max> [<binding-max>]
 #         <transcription-file> <binding-file>
 #
