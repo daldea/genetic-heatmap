@@ -222,23 +222,29 @@ sed '/^#/d' < "$transcription_path" > "$temp_transcription"
 sed -i "s/ /\t/g" "$temp_transcription"
 
 # remove comments from binding data file
+temp_binding_unfiltered=$temp_dir/parsed_data/binding_data_unfiltered
 temp_binding=$temp_dir/parsed_data/binding_data
-sed '/^#/d' < "$binding_path" > "$temp_binding"
+sed '/^#/d' < "$binding_path" > "$temp_binding_unfiltered"
 # replace spaces with tabs in binding data file
-sed -i "s/ /\t/g" "$temp_binding"
+sed -i "s/ /\t/g" "$temp_binding_unfiltered"
 
 # determine if binding data is a ChIP-seq data file or a bound gene list file
-if grep -Pq "\t" "$temp_binding"; then
+if grep -Pq "\t" "$temp_binding_unfiltered"; then
     if $use_blacklist; then
         # remove all blacklisted binding sites
-        bedtools subtract -A -a "$temp_binding" -b "$blacklist" \
+        bedtools subtract -A -a "$temp_binding_unfiltered" -b "$blacklist" \
             > "$temp_binding"
     fi
+    sed '/^#/d' < "$binding_path" > "$temp_binding"
+    # replace spaces with tabs in binding data file
+    sed -i "s/ /\t/g" "$temp_binding"
     # run the BETA genomic analysis program to generate bound gene list file
     BETA minus -p "$temp_binding" -g $genome -d $binding_dist \
         -o "$temp_dir/BETA_output" --bl > /dev/null
     # remove comments from BETA output file
     sed '/^#/d' < "$temp_dir/BETA_output/NA_targets.txt" > "$temp_binding"
+else
+    temp_binding=$temp_binding_unfiltered
 fi
 
 # pass validated arguments to the analysis engine
